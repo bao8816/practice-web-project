@@ -1,18 +1,23 @@
 import { SeederOptions } from 'typeorm-extension';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+
+@Module({
+    imports: [ConfigModule.forRoot({ isGlobal: true })],
+    providers: [ConfigService],
+})
+export class DataSourceModule {}
 
 const configService = new ConfigService();
 
 export const dataSourceOptions: DataSourceOptions & SeederOptions = {
     type: 'postgres',
-    host: process.env.DATABASE_HOST || configService.get<string>('DATABASE_HOST', 'localhost'),
-    port: process.env.DATABASE_PORT
-        ? parseInt(process.env.DATABASE_PORT)
-        : configService.get<number>('DATABASE_PORT', 5432),
-    username: process.env.DATABASE_USER || configService.get<string>('DATABASE_USER', 'postgres'),
-    password: process.env.DATABASE_PASSWORD || configService.get<string>('DATABASE_PASSWORD', 'ltpbao'),
-    database: process.env.DATABASE_NAME || configService.get<string>('DATABASE_NAME', 'ecommerce_project_db'),
+    host: configService.get<string>('DATABASE_HOST'),
+    port: configService.get<number>('DATABASE_PORT'),
+    username: configService.get<string>('DATABASE_USER'),
+    password: configService.get<string>('DATABASE_PASSWORD'),
+    database: configService.get<string>('DATABASE_NAME'),
     entities: ['dist/**/*.entity.js'],
     migrations: ['dist/db/migrations/**/*.js'],
     seeds: ['dist/db/seeds/**/*.js'],
