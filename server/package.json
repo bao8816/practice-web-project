@@ -8,7 +8,7 @@
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-        "seed": "npx typeorm-extension seed:run -d dist/db/data-source.js",
+        "seed": "npx ts-node src/db/seed.ts",
         "start": "nest start",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
