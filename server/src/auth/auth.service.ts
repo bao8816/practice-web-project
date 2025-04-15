@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -30,7 +30,16 @@ export class AuthService {
         return isPasswordMatch ? user : null;
     }
 
-    async register(username: string, password: string) {
+    async register(username: string, password: string, confirmPassword: string) {
+        const existingUser = await this.userService.findUserByUsername(username);
+        if (existingUser) {
+            throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST);
+        }
+
+        if (password !== confirmPassword) {
+            throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
+        }
+
         const hashedPassword = await this.hashPassword(password);
         return this.userService.createUser(username, hashedPassword);
     }
