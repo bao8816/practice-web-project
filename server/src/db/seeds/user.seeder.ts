@@ -20,10 +20,7 @@ export default class UserSeeder implements Seeder {
 
         // Add the Administrator user
         const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(
-            this.configService.get<string>('ADMIN_DEFAULT_PASSWORD', 'admin123'),
-            salt,
-        );
+        const hashedPassword = await bcrypt.hash(this.configService.get<string>('ADMIN_DEFAULT_PASSWORD', ''), salt);
 
         const user = repository.create({
             username: 'Administrator',
