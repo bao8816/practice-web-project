@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Users } from '../users/users.entity';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { IUser } from '../shared/interfaces/users.interface';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { IUser } from '../shared/interfaces';
+import { RegisterDto, LoginDto, UpdatePasswordDto } from './dto';
+import { AppException } from '../shared/exceptions/exceptions';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 interface AuthenticatedRequest extends Request {
     user: IUser;
@@ -18,6 +19,17 @@ export class AuthController {
     async register(@Body() dto: RegisterDto): Promise<Users> {
         const { username, password, confirmPassword } = dto;
         return await this.authService.register(username, password, confirmPassword);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Patch('update-password')
+    async updatePassword(@Body() dto: UpdatePasswordDto, @Request() req: AuthenticatedRequest): Promise<Users> {
+        if (!req.user) {
+            throw AppException.Unauthorized('User not authenticated');
+        }
+
+        const { oldPassword, newPassword, confirmPassword } = dto;
+        return await this.authService.updatePassword(req.user.id, oldPassword, newPassword, confirmPassword);
     }
 
     @UseGuards(LocalAuthGuard)

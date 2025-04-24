@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { IUser } from '../shared/interfaces/users.interface';
+import { IUser } from '../shared/interfaces';
+import { AppException } from '../shared/exceptions/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -33,15 +34,34 @@ export class AuthService {
     async register(username: string, password: string, confirmPassword: string) {
         const existingUser = await this.userService.findUserByUsername(username);
         if (existingUser) {
-            throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST);
+            throw AppException.BadRequest('User already exists');
         }
 
         if (password !== confirmPassword) {
-            throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
+            throw AppException.BadRequest('Passwords do not match');
         }
 
         const hashedPassword = await this.hashPassword(password);
         return this.userService.createUser(username, hashedPassword);
+    }
+
+    async updatePassword(userId: number, oldPassword: string, newPassword: string, confirmPassword: string) {
+        const user = await this.userService.findUserById(userId);
+        if (!user) {
+            throw AppException.NotFound('User does not exist');
+        }
+
+        const isPasswordMatch = await this.comparePasswords(oldPassword, user.password);
+        if (!isPasswordMatch) {
+            throw AppException.BadRequest('Old password is incorrect');
+        }
+
+        if (newPassword !== confirmPassword) {
+            throw AppException.BadRequest('Passwords do not match');
+        }
+
+        const hashedPassword = await this.hashPassword(newPassword);
+        return this.userService.updateUser(userId, { password: hashedPassword });
     }
 
     login(user: IUser) {
