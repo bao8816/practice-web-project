@@ -16,7 +16,7 @@ export default class UserSeeder implements Seeder {
         const repository = this.dataSource.getRepository(Users);
 
         // Truncate the users table to clear all data and reset the ID counter
-        await this.dataSource.query(`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`);
+        await this.dataSource.query(`TRUNCATE TABLE "users" RESTART IDENTITY CASCADE;`);
 
         // Add the Administrator user
         const salt = await bcrypt.genSalt();
