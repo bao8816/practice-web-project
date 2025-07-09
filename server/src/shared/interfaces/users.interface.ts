@@ -3,5 +3,7 @@ export type IUser = {
     username: string;
     password: string;
     email?: string;
-    role: string;
+    role: IUserRole;
 };
+
+export type IUserRole = 'user' | 'admin';

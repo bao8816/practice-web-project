@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { IUser } from '../shared/interfaces';
 import { AppException } from '../shared/exceptions/exceptions';
+import { hashPassword } from '../shared/utils';
 
 @Injectable()
 export class AuthService {
@@ -11,11 +12,6 @@ export class AuthService {
         private jwtService: JwtService,
         private userService: UsersService,
     ) {}
-
-    async hashPassword(password: string) {
-        const salt = await bcrypt.genSalt(12);
-        return bcrypt.hash(password, salt);
-    }
 
     async comparePasswords(password: string, passwordHash: string) {
         return bcrypt.compare(password, passwordHash);
@@ -32,24 +28,15 @@ export class AuthService {
     }
 
     async register(username: string, password: string, confirmPassword: string) {
-        const existingUser = await this.userService.findUserByUsername(username);
-        if (existingUser) {
-            throw AppException.BadRequest('User already exists');
-        }
-
         if (password !== confirmPassword) {
             throw AppException.BadRequest('Passwords do not match');
         }
 
-        const hashedPassword = await this.hashPassword(password);
-        return this.userService.createUser(username, hashedPassword);
+        return this.userService.createUser({ username, password });
     }
 
     async updatePassword(userId: number, oldPassword: string, newPassword: string, confirmPassword: string) {
         const user = await this.userService.findUserById(userId);
-        if (!user) {
-            throw AppException.NotFound('User does not exist');
-        }
 
         const isPasswordMatch = await this.comparePasswords(oldPassword, user.password);
         if (!isPasswordMatch) {
@@ -60,7 +47,7 @@ export class AuthService {
             throw AppException.BadRequest('Passwords do not match');
         }
 
-        const hashedPassword = await this.hashPassword(newPassword);
+        const hashedPassword = await hashPassword(newPassword);
         return this.userService.updateUser(userId, { password: hashedPassword });
     }
 

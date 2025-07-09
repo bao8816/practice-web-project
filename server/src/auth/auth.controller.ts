@@ -7,7 +7,7 @@ import { RegisterDto, LoginDto, UpdatePasswordDto } from './dto';
 import { AppException } from '../shared/exceptions/exceptions';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
     user: IUser;
 }
 

@@ -14,6 +14,9 @@ export class Users {
     @Column({ default: 'user' })
     role: string;
 
+    @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+    email: string | null;
+
     @CreateDateColumn()
     createdAt: Date;
 
