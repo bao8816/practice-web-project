@@ -16,7 +16,7 @@ export enum Gender {
 }
 
 @Entity()
-export class Profile {
+export class Profiles {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -24,7 +24,7 @@ export class Profile {
     userId: number;
 
     @OneToOne(() => Users, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'userId' })
+    @JoinColumn()
     user: Users;
 
     @Column({ nullable: true })

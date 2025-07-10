@@ -1,6 +1,6 @@
 import { Seeder } from 'typeorm-extension';
 import { DataSource } from 'typeorm';
-import { Profile } from '../../profiles/profiles.entity';
+import { Profiles } from '../../profiles/profiles.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -8,7 +8,7 @@ export default class ProfileSeeder implements Seeder {
     constructor(private readonly dataSource: DataSource) {}
 
     public async run(): Promise<void> {
-        const repository = this.dataSource.getRepository(Profile);
+        const repository = this.dataSource.getRepository(Profiles);
 
         // Truncate the profiles table to clear all data and reset the ID counter
         await this.dataSource.query(`TRUNCATE TABLE "profiles" RESTART IDENTITY CASCADE;`);

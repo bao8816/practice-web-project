@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import UserSeeder from './user.seeder';
 import ProfileSeeder from './profile.seeder';
 import AddressSeeder from './address.seeder';
 import { Users } from '../../users/users.entity';
-import { Profile } from '../../profiles/profiles.entity';
+import { Profiles } from '../../profiles/profiles.entity';
 import { Addresses } from '../../addresses/addresses.entity';
 
 @Module({
@@ -23,12 +24,13 @@ import { Addresses } from '../../addresses/addresses.entity';
                 username: configService.get<string>('DATABASE_USER'),
                 password: configService.get<string>('DATABASE_PASSWORD'),
                 database: configService.get<string>('DATABASE_NAME'),
-                entities: [Users, Profile, Addresses],
+                entities: [Users, Profiles, Addresses],
                 autoLoadEntities: true,
                 synchronize: false,
+                namingStrategy: new SnakeNamingStrategy(),
             }),
         }),
-        TypeOrmModule.forFeature([Users, Profile, Addresses]),
+        TypeOrmModule.forFeature([Users, Profiles, Addresses]),
     ],
     providers: [UserSeeder, ProfileSeeder, AddressSeeder],
 })

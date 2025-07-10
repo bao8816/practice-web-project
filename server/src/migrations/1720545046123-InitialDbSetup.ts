@@ -12,8 +12,8 @@ export class InitialDbSetup1720545046123 implements MigrationInterface {
                 "password" varchar NOT NULL,
                 "role" varchar NOT NULL DEFAULT 'user',
                 "email" varchar(255),
-                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
-                "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+                "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+                "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
                 CONSTRAINT "UQ_fe0bb3f6520ee0469504521e710" UNIQUE ("username"),
                 CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"),
                 CONSTRAINT "PK_users" PRIMARY KEY ("id")
@@ -47,23 +47,28 @@ export class InitialDbSetup1720545046123 implements MigrationInterface {
         await queryRunner.query(`
             CREATE TABLE "addresses" (
                 "id" SERIAL NOT NULL,
-                "userId" integer NOT NULL,
+                "user_id" integer NOT NULL,
                 "name" character varying,
-                "recipientName" character varying NOT NULL,
-                "streetAddress" character varying NOT NULL,
+                "recipient_name" character varying NOT NULL,
+                "street_address" character varying NOT NULL,
                 "city" character varying NOT NULL,
                 "state" character varying,
-                "postalCode" character varying NOT NULL,
+                "postal_code" character varying NOT NULL,
                 "country" character varying NOT NULL,
-                "phoneNumber" character varying,
-                "isDefaultShipping" boolean NOT NULL DEFAULT false,
-                "isDefaultBilling" boolean NOT NULL DEFAULT false,
-                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
-                "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
-                CONSTRAINT "PK_addresses" PRIMARY KEY ("id"),
-                CONSTRAINT "FK_addresses_users" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE
+                "phone_number" character varying,
+                "is_default_shipping" boolean NOT NULL DEFAULT false,
+                "is_default_billing" boolean NOT NULL DEFAULT false,
+                "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+                "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+                CONSTRAINT "PK_addresses" PRIMARY KEY ("id")
             )
         `);
+
+        await queryRunner.query(`
+                ALTER TABLE "addresses"
+                ADD CONSTRAINT "FK_addresses_users"
+                FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE
+            `);
 
         // Create products table
         await queryRunner.query(`

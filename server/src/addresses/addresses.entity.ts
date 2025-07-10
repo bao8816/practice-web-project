@@ -18,7 +18,7 @@ export class Addresses {
     userId: number;
 
     @ManyToOne(() => Users, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'userId' })
+    @JoinColumn()
     user: Users;
 
     @Column({ nullable: true })
