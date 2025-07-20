@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { Auth } from '../shared/decorators';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { AuthenticatedRequest } from '../auth/auth.controller';
+import { AuthRequest } from '../shared/interfaces';
 
 @Controller('users')
 export class UsersController {
@@ -38,7 +38,7 @@ export class UsersController {
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
-    deleteUser(@Param('id') userId: string, @Request() req: AuthenticatedRequest) {
+    deleteUser(@Param('id') userId: string, @Request() req: AuthRequest) {
         const currentUser = req.user;
         return this.usersService.deleteUser(Number(userId), currentUser);
     }

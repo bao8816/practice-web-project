@@ -5,12 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AppException } from '../shared/exceptions/exceptions';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { hashPassword } from '../shared/utils';
+import { ProfilesService } from '../profiles/profiles.service';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(Users)
         private usersRepository: Repository<Users>,
+        private profilesService: ProfilesService,
     ) {}
 
     async findAll() {
@@ -46,7 +48,11 @@ export class UsersService {
             password: skipPasswordHashing ? userDto.password : await hashPassword(userDto.password),
         });
 
-        return await this.usersRepository.save(user);
+        const savedUser = await this.usersRepository.save(user);
+
+        await this.profilesService.createProfile(savedUser.id);
+
+        return savedUser;
     }
 
     async updateUser(userId: number, updateUserDto: UpdateUserDto) {

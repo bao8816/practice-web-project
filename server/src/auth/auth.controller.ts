@@ -2,14 +2,10 @@ import { Body, Controller, Patch, Post, Request, UseGuards } from '@nestjs/commo
 import { AuthService } from './auth.service';
 import { Users } from '../users/users.entity';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { IUser } from '../shared/interfaces';
 import { RegisterDto, LoginDto, UpdatePasswordDto } from './dto';
 import { AppException } from '../shared/exceptions/exceptions';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-
-export interface AuthenticatedRequest extends Request {
-    user: IUser;
-}
+import { AuthRequest } from '../shared/interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +19,7 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Patch('update-password')
-    async updatePassword(@Body() dto: UpdatePasswordDto, @Request() req: AuthenticatedRequest): Promise<Users> {
+    async updatePassword(@Body() dto: UpdatePasswordDto, @Request() req: AuthRequest): Promise<Users> {
         if (!req.user) {
             throw AppException.Unauthorized('User not authenticated');
         }
@@ -34,7 +30,7 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    login(@Body() dto: LoginDto, @Request() req: AuthenticatedRequest) {
+    login(@Body() dto: LoginDto, @Request() req: AuthRequest) {
         return this.authService.login(req.user);
     }
 }
