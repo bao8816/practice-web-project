@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProfilesModule } from './profiles/profiles.module';
 import { typeOrmConfigFactory } from '../typeorm.config';
+import { AddressesModule } from './addresses/addresses.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { typeOrmConfigFactory } from '../typeorm.config';
         UsersModule,
         AuthModule,
         ProfilesModule,
+        AddressesModule,
     ],
     controllers: [AppController],
     providers: [AppService],
