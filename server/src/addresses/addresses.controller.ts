@@ -6,6 +6,7 @@ import { AuthRequest } from '../shared/interfaces';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { AppException } from '../shared/exceptions/exceptions';
+import { CustomParseIntPipe } from '../shared/pipes/custom-parse-int.pipe';
 
 @Controller('addresses')
 export class AddressesController {
@@ -19,13 +20,13 @@ export class AddressesController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':id')
-    async getById(@Param('id') id: number): Promise<Addresses> {
+    async getById(@Param('id', CustomParseIntPipe) id: number): Promise<Addresses> {
         return this.addressesService.findOne(id);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('user/:userId')
-    async getByUserId(@Param('userId') userId: number): Promise<Addresses[]> {
+    async getByUserId(@Param('userId', CustomParseIntPipe) userId: number): Promise<Addresses[]> {
         return this.addressesService.findByUserId(userId);
     }
 
@@ -62,7 +63,7 @@ export class AddressesController {
     @UseGuards(JwtAuthGuard)
     @Put(':id')
     async updateAddress(
-        @Param('id') id: number,
+        @Param('id', CustomParseIntPipe) id: number,
         @Body() updateAddressDto: UpdateAddressDto,
         @Request() req: AuthRequest,
     ): Promise<Addresses> {
@@ -76,7 +77,7 @@ export class AddressesController {
 
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    async deleteAddress(@Param('id') id: number, @Request() req: AuthRequest): Promise<void> {
+    async deleteAddress(@Param('id', CustomParseIntPipe) id: number, @Request() req: AuthRequest): Promise<void> {
         const address = await this.addressesService.findOne(id);
         if (address.userId !== req.user.id) {
             throw AppException.Forbidden('You do not have permission to delete this address');

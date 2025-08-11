@@ -6,6 +6,7 @@ import { AppException } from '../shared/exceptions/exceptions';
 import { AuthRequest } from '../shared/interfaces';
 import { Profiles } from './profiles.entity';
 import { Auth } from '../shared/decorators';
+import { CustomParseIntPipe } from '../shared/pipes/custom-parse-int.pipe';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -34,48 +35,51 @@ export class ProfilesController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':userId')
-    async getUserProfile(@Param('userId') userId: string, @Request() req: AuthRequest): Promise<Profiles> {
+    async getUserProfile(
+        @Param('userId', CustomParseIntPipe) userId: number,
+        @Request() req: AuthRequest,
+    ): Promise<Profiles> {
         // Only admin or the user themselves can view their profile
-        if (req.user.id !== Number(userId) && req.user.role !== 'admin') {
+        if (req.user.id !== userId && req.user.role !== 'admin') {
             throw AppException.Forbidden(`You don't have permission to view this profile`);
         }
 
-        return this.profilesService.findProfileByUserId(Number(userId));
+        return this.profilesService.findProfileByUserId(userId);
     }
 
     @UseGuards(JwtAuthGuard)
     @Put(':userId')
     async updateUserProfile(
-        @Param('userId') userId: string,
+        @Param('userId', CustomParseIntPipe) userId: number,
         @Body() updateProfileDto: UpdateProfileDto,
         @Request() req: AuthRequest,
     ): Promise<Profiles> {
         // Only admin or the user themselves can update their profile
-        if (req.user.id !== Number(userId) && req.user.role !== 'admin') {
+        if (req.user.id !== userId && req.user.role !== 'admin') {
             throw AppException.Forbidden(`You don't have permission to update this profile`);
         }
 
-        return this.profilesService.updateProfile(Number(userId), updateProfileDto);
+        return this.profilesService.updateProfile(userId, updateProfileDto);
     }
 
     @UseGuards(JwtAuthGuard)
     @Post(':userId')
     @Auth('admin')
     async createUserProfile(
-        @Param('userId') userId: string,
+        @Param('userId', CustomParseIntPipe) userId: number,
         @Body() createProfileDto: CreateProfileDto,
     ): Promise<Profiles> {
-        return this.profilesService.createProfile(Number(userId), createProfileDto);
+        return this.profilesService.createProfile(userId, createProfileDto);
     }
 
     @UseGuards(JwtAuthGuard)
     @Delete(':userId')
-    async deleteUserProfile(@Param('userId') userId: string, @Request() req: AuthRequest) {
+    async deleteUserProfile(@Param('userId', CustomParseIntPipe) userId: number, @Request() req: AuthRequest) {
         // Only admin or the user themselves can delete their profile
-        if (req.user.id !== Number(userId) && req.user.role !== 'admin') {
+        if (req.user.id !== userId && req.user.role !== 'admin') {
             throw AppException.Forbidden(`You don't have permission to delete this profile`);
         }
 
-        return this.profilesService.deleteProfile(Number(userId));
+        return this.profilesService.deleteProfile(userId);
     }
 }
