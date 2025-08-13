@@ -3,6 +3,7 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default tseslint.config(
     { ignores: ['dist'] },
@@ -19,17 +20,8 @@ export default tseslint.config(
         },
         rules: {
             ...reactHooks.configs.recommended.rules,
-            'react-refresh/only-export-components': [
-                'warn',
-                { allowConstantExport: true },
-            ],
-
-            'indent': ['error', 4],
-            'quotes': ['error', 'single'],
-            'semi': ['error', 'always'],
-            'comma-dangle': ['error', 'always-multiline'],
-            'max-len': ['error', { code: 120, ignoreComments: true, ignoreUrls: true }],
-            'object-curly-spacing': ['error', 'always'],
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         },
     },
+    eslintPluginPrettierRecommended,
 );
