@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
+    "dev:debug": "vite --debug",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "lint:fix": "eslint . --fix",
+    "preview": "vite preview",
+    "restart": "echo 'Restarting Vite server...' && npm run dev"
   },
   "dependencies": {
     "react": "^19.0.0",
