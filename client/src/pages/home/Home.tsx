@@ -1,12 +1,47 @@
 import { Link } from 'react-router-dom';
+import { useAuth, useLogout } from '../../hooks/auth';
 import './Home.css';
 
 export const Home = () => {
+    const { isAuthenticated } = useAuth();
+    const logoutMutation = useLogout();
+
+    const handleLogout = () => {
+        logoutMutation.mutate();
+    };
+
     return (
         <div className="home-container">
             <header className="home-header">
-                <h1 className="home-title">ShopSmart</h1>
-                <p className="home-subtitle">Your Ultimate Shopping Destination</p>
+                <div className="header-content">
+                    <div className="header-main">
+                        <h1 className="home-title">ShopSmart</h1>
+                        <p className="home-subtitle">Your Ultimate Shopping Destination</p>
+                    </div>
+                    <div className="header-auth">
+                        {isAuthenticated ? (
+                            <>
+                                <span className="welcome-text">Welcome back!</span>
+                                <button
+                                    onClick={handleLogout}
+                                    className="auth-btn logout-btn"
+                                    disabled={logoutMutation.isPending}
+                                >
+                                    {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className="auth-btn login-btn">
+                                    Sign In
+                                </Link>
+                                <Link to="/register" className="auth-btn register-btn">
+                                    Join Now
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                </div>
             </header>
 
             <main className="home-main">
@@ -53,6 +88,22 @@ export const Home = () => {
                             Best Deals
                         </Link>
                     </nav>
+
+                    <div className="auth-cta-section">
+                        <h3 className="cta-title">Ready to Start Shopping?</h3>
+                        <p className="cta-description">
+                            Join thousands of happy customers and get access to exclusive deals, personalized
+                            recommendations, and faster checkout.
+                        </p>
+                        <div className="cta-buttons">
+                            <Link to="/register" className="cta-btn primary">
+                                Create Free Account
+                            </Link>
+                            <Link to="/login" className="cta-btn secondary">
+                                Already have an account? Sign In
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </main>
 
