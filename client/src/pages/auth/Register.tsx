@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import './Auth.css';
 import { useRegister } from '../../hooks/auth';
+import type { AxiosError } from 'axios';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -61,7 +62,7 @@ export const Register = () => {
     const getErrorMessage = () => {
         if (!registerMutation.error) return null;
 
-        const error = registerMutation.error as any;
+        const error = registerMutation.error as AxiosError<{ message?: string }>;
         if (error.response?.data?.message) {
             return error.response.data.message;
         }
