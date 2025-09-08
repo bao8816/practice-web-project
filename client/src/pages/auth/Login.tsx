@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import './Auth.css';
 import { useLogin } from '../../hooks/auth';
+import type { AxiosError } from 'axios';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -54,7 +55,7 @@ export const Login = () => {
     const getErrorMessage = () => {
         if (!loginMutation.error) return null;
 
-        const error = loginMutation.error as any;
+        const error = loginMutation.error as AxiosError<{ message?: string }>;
         if (error.response?.data?.message) {
             return error.response.data.message;
         }
@@ -77,6 +78,17 @@ export const Login = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">
+                        {(hasValidationErrors.length > 0 || loginMutation.error) && (
+                            <div className="auth-errors">
+                                {hasValidationErrors.map((error, index) => (
+                                    <p key={index} className="error-message">
+                                        {error}
+                                    </p>
+                                ))}
+                                {loginMutation.error && <p className="error-message">{getErrorMessage()}</p>}
+                            </div>
+                        )}
+
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -90,6 +102,7 @@ export const Login = () => {
                                 className="form-input"
                                 placeholder="Enter your username"
                                 autoComplete="username"
+                                disabled={loginMutation.isPending}
                             />
                         </div>
 
@@ -106,12 +119,15 @@ export const Login = () => {
                                 className="form-input"
                                 placeholder="Enter your password"
                                 autoComplete="current-password"
+                                disabled={loginMutation.isPending}
                             />
                         </div>
 
-                        {loginMutation.error && <div className="error-message">{loginMutation.error.message}</div>}
-
-                        <button type="submit" disabled={loginMutation.isPending} className="auth-button">
+                        <button
+                            type="submit"
+                            disabled={loginMutation.isPending || hasValidationErrors.length > 0}
+                            className="auth-button"
+                        >
                             {loginMutation.isPending ? 'Signing In...' : 'Sign In'}
                         </button>
                     </form>
