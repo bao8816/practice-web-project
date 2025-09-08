@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Layout } from '../../components/layout/Layout';
 import './Auth.css';
 import { useRegister } from '../../hooks/auth';
 
@@ -10,7 +11,6 @@ export const Register = () => {
         confirmPassword: '',
     });
 
-    // Use the custom register hook instead of manual fetch
     const registerMutation = useRegister();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,6 @@ export const Register = () => {
             [name]: value,
         }));
 
-        // Clear errors when user starts typing
         if (registerMutation.error) {
             registerMutation.reset();
         }
@@ -56,11 +55,9 @@ export const Register = () => {
             return;
         }
 
-        // Use the mutation to register
         registerMutation.mutate(formData);
     };
 
-    // Extract error message from React Query error
     const getErrorMessage = () => {
         if (!registerMutation.error) return null;
 
@@ -79,93 +76,100 @@ export const Register = () => {
         formData.username !== '' || formData.password !== '' || formData.confirmPassword !== '' ? validationErrors : [];
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <div className="auth-header">
-                    <h1 className="auth-title">Create Account</h1>
-                    <p className="auth-subtitle">Join ShopSmart today</p>
-                </div>
+        <Layout headerVariant="compact">
+            <div className="auth-container">
+                <div className="auth-card">
+                    <div className="auth-header">
+                        <h2 className="auth-title">Create Account</h2>
+                        <p className="auth-subtitle">Join ShopSmart today</p>
+                    </div>
 
-                <form className="auth-form" onSubmit={handleSubmit}>
-                    {/* Show validation errors or API errors */}
-                    {(hasValidationErrors.length > 0 || registerMutation.error) && (
-                        <div className="auth-errors">
-                            {hasValidationErrors.map((error, index) => (
-                                <p key={index} className="error-message">
-                                    {error}
-                                </p>
-                            ))}
-                            {registerMutation.error && <p className="error-message">{getErrorMessage()}</p>}
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        {(hasValidationErrors.length > 0 || registerMutation.error) && (
+                            <div className="auth-errors">
+                                {hasValidationErrors.map((error, index) => (
+                                    <p key={index} className="error-message">
+                                        {error}
+                                    </p>
+                                ))}
+                                {registerMutation.error && <p className="error-message">{getErrorMessage()}</p>}
+                            </div>
+                        )}
+
+                        <div className="form-group">
+                            <label htmlFor="username" className="form-label">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Choose a username"
+                                autoComplete="username"
+                                disabled={registerMutation.isPending}
+                            />
                         </div>
-                    )}
 
-                    <div className="form-group">
-                        <label htmlFor="username" className="form-label">
-                            Username
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            className="form-input"
-                            placeholder="Enter your username"
-                            disabled={registerMutation.isPending}
-                        />
+                        <div className="form-group">
+                            <label htmlFor="password" className="form-label">
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Create a password"
+                                autoComplete="new-password"
+                                disabled={registerMutation.isPending}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="confirmPassword" className="form-label">
+                                Confirm Password
+                            </label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                className="form-input"
+                                placeholder="Confirm your password"
+                                autoComplete="new-password"
+                                disabled={registerMutation.isPending}
+                            />
+                        </div>
+
+                        {registerMutation.error && (
+                            <div className="error-message">{registerMutation.error.message}</div>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={registerMutation.isPending || hasValidationErrors.length > 0}
+                            className="auth-button"
+                        >
+                            {registerMutation.isPending ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </form>
+
+                    <div className="auth-footer">
+                        <p className="auth-link-text">
+                            Already have an account?{' '}
+                            <Link to="/login" className="auth-link">
+                                Sign in here
+                            </Link>
+                        </p>
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password" className="form-label">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="form-input"
-                            placeholder="Enter your password"
-                            disabled={registerMutation.isPending}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="confirmPassword" className="form-label">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className="form-input"
-                            placeholder="Confirm your password"
-                            disabled={registerMutation.isPending}
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="auth-button"
-                        disabled={registerMutation.isPending || hasValidationErrors.length > 0}
-                    >
-                        {registerMutation.isPending ? 'Creating Account...' : 'Create Account'}
-                    </button>
-                </form>
-
-                <div className="auth-footer">
-                    <p className="auth-link-text">
-                        Already have an account?
-                        <Link to="/login" className="auth-link">
-                            {' '}
-                            Sign in
-                        </Link>
-                    </p>
                 </div>
             </div>
-        </div>
+        </Layout>
     );
 };
