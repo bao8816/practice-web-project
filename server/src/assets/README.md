@@ -44,12 +44,22 @@ const productImage = ImageService.generateProductPlaceholder('electronics', 'LAR
 ```
 
 ### Frontend Usage
-```typescript
+```tsx
 // Fallback for broken images
 const defaultAvatar = 'https://ui-avatars.com/api/?name=User&background=6B7280&color=fff&size=200';
 
 // Use in img tag with fallback
-<img src={user.avatarUrl} onError={(e) => e.target.src = defaultAvatar} />
+function UserAvatar({ user }) {
+  return (
+    <img 
+      src={user.avatarUrl} 
+      onError={(e) => {
+        e.currentTarget.src = defaultAvatar;
+      }}
+      alt="User Avatar"
+    />
+  );
+}
 ```
 
 ## Best Practices
