@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { IUser } from '../shared/interfaces';
-import { AppException } from '../shared/exceptions/exceptions';
+import { AuthExceptions, PasswordExceptions } from './exceptions';
 import { hashPassword } from '../shared/utils';
 
 @Injectable()
@@ -20,16 +20,20 @@ export class AuthService {
     async validateUser(username: string, password: string) {
         const user = await this.userService.findUserByUsername(username);
         if (!user) {
-            return null;
+            throw AuthExceptions.invalidCredentials();
         }
 
         const isPasswordMatch = await this.comparePasswords(password, user.password);
-        return isPasswordMatch ? user : null;
+        if (!isPasswordMatch) {
+            throw AuthExceptions.wrongPassword();
+        }
+
+        return user;
     }
 
     async register(username: string, password: string, confirmPassword: string) {
         if (password !== confirmPassword) {
-            throw AppException.BadRequest('Passwords do not match');
+            throw PasswordExceptions.mismatch();
         }
 
         return this.userService.createUser({ username, password });
@@ -40,11 +44,11 @@ export class AuthService {
 
         const isPasswordMatch = await this.comparePasswords(oldPassword, user.password);
         if (!isPasswordMatch) {
-            throw AppException.BadRequest('Old password is incorrect');
+            throw PasswordExceptions.oldPasswordIncorrect();
         }
 
         if (newPassword !== confirmPassword) {
-            throw AppException.BadRequest('Passwords do not match');
+            throw PasswordExceptions.mismatch();
         }
 
         const hashedPassword = await hashPassword(newPassword);

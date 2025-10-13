@@ -1,67 +1,98 @@
-import { BadRequestException, HttpStatus } from '@nestjs/common';
+import {
+    BadRequestException,
+    UnauthorizedException,
+    ForbiddenException,
+    NotFoundException,
+    InternalServerErrorException,
+    ConflictException,
+    UnprocessableEntityException,
+    HttpStatus,
+} from '@nestjs/common';
+import { ERROR_MESSAGES } from '../constants/error-messages';
 
+// TODO: consider adding exception for each moodule or user all in one file
 export class AppException {
-    static BadRequest(message = 'Bad Request', error = 'Bad Request', statusCode = HttpStatus.BAD_REQUEST) {
+    static BadRequest(
+        message: string = ERROR_MESSAGES.GENERAL.BAD_REQUEST,
+        errorType: string = 'Bad Request',
+        statusCode: number = HttpStatus.BAD_REQUEST,
+    ) {
         return new BadRequestException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
-    static Unauthorized(message = 'Unauthorized', error = 'Unauthorized', statusCode = HttpStatus.UNAUTHORIZED) {
-        return new BadRequestException({
+    static Unauthorized(
+        message: string = ERROR_MESSAGES.AUTH.UNAUTHORIZED,
+        errorType: string = 'Unauthorized',
+        statusCode: number = HttpStatus.UNAUTHORIZED,
+    ) {
+        return new UnauthorizedException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
-    static Forbidden(message = 'Forbidden', error = 'Forbidden', statusCode = HttpStatus.FORBIDDEN) {
-        return new BadRequestException({
+    static Forbidden(
+        message: string = ERROR_MESSAGES.GENERAL.FORBIDDEN,
+        errorType: string = 'Forbidden',
+        statusCode: number = HttpStatus.FORBIDDEN,
+    ) {
+        return new ForbiddenException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
-    static NotFound(message = 'Not Found', error = 'Not Found', statusCode = HttpStatus.NOT_FOUND) {
-        return new BadRequestException({
+    static NotFound(
+        message: string = ERROR_MESSAGES.GENERAL.NOT_FOUND,
+        errorType: string = 'Not Found',
+        statusCode: number = HttpStatus.NOT_FOUND,
+    ) {
+        return new NotFoundException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
     static InternalServerError(
-        message = 'Internal Server Error',
-        error = 'Internal Server Error',
-        statusCode = HttpStatus.INTERNAL_SERVER_ERROR,
+        message: string = ERROR_MESSAGES.GENERAL.INTERNAL_ERROR,
+        errorType: string = 'Internal Server Error',
+        statusCode: number = HttpStatus.INTERNAL_SERVER_ERROR,
     ) {
-        return new BadRequestException({
+        return new InternalServerErrorException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
-    static Conflict(message = 'Conflict', error = 'Conflict', statusCode = HttpStatus.CONFLICT) {
-        return new BadRequestException({
+    static Conflict(
+        message: string = ERROR_MESSAGES.BUSINESS.RESOURCE_CONFLICT,
+        errorType: string = 'Conflict',
+        statusCode: number = HttpStatus.CONFLICT,
+    ) {
+        return new ConflictException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 
     static UnprocessableEntity(
-        message = 'Unprocessable Entity',
-        error = 'Unprocessable Entity',
-        statusCode = HttpStatus.UNPROCESSABLE_ENTITY,
+        message: string = ERROR_MESSAGES.VALIDATION.INVALID_FORMAT,
+        errorType: string = 'Unprocessable Entity',
+        statusCode: number = HttpStatus.UNPROCESSABLE_ENTITY,
     ) {
-        return new BadRequestException({
+        return new UnprocessableEntityException({
             statusCode,
             message,
-            error,
+            error: errorType,
         });
     }
 }
