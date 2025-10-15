@@ -18,6 +18,16 @@ export const ERROR_MESSAGES = {
         DELETE_FAILED: 'Failed to delete user',
     },
 
+    // Profile management errors
+    PROFILE: {
+        NOT_FOUND: 'Profile not found',
+        ALREADY_EXISTS: 'Profile already exists for this user',
+        CREATION_FAILED: 'Failed to create profile',
+        UPDATE_FAILED: 'Failed to update profile',
+        DELETE_FAILED: 'Failed to delete profile',
+        ACCESS_DENIED: 'You do not have permission to access this profile',
+    },
+
     // Password errors
     PASSWORD: {
         MISMATCH: 'Passwords do not match',
@@ -68,6 +78,14 @@ export const ERROR_CODES = {
         CREATION_FAILED: 'USER_003',
         UPDATE_FAILED: 'USER_004',
         DELETE_FAILED: 'USER_005',
+    },
+    PROFILE: {
+        NOT_FOUND: 'PROFILE_001',
+        ALREADY_EXISTS: 'PROFILE_002',
+        CREATION_FAILED: 'PROFILE_003',
+        UPDATE_FAILED: 'PROFILE_004',
+        DELETE_FAILED: 'PROFILE_005',
+        ACCESS_DENIED: 'PROFILE_006',
     },
     PASSWORD: {
         MISMATCH: 'PWD_001',

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Profiles } from './profiles.entity';
-import { AppException } from '../shared/exceptions/exceptions';
 import { CreateProfileDto, UpdateProfileDto } from './dto';
 import { ValidationService } from '../shared/services/validation.service';
+import { ProfilesException } from './exceptions';
 
 @Injectable()
 export class ProfilesService {
@@ -25,14 +25,20 @@ export class ProfilesService {
         action: string,
     ): void {
         if (!this.canAccessProfile(requestingUserId, targetUserId, userRole)) {
-            throw AppException.Forbidden(`You don't have permission to ${action} this profile`);
+            if (action === 'update') {
+                throw ProfilesException.InsufficientPermissionToUpdate();
+            } else if (action === 'delete') {
+                throw ProfilesException.InsufficientPermissionToDelete();
+            } else {
+                throw ProfilesException.ProfileAccessDenied();
+            }
         }
     }
 
     async findAll(): Promise<Profiles[]> {
         const profiles = await this.profilesRepository.find();
         if (!profiles || profiles.length === 0) {
-            throw AppException.NotFound('No profiles found');
+            throw ProfilesException.NoProfilesFound();
         }
         return profiles;
     }
@@ -46,7 +52,7 @@ export class ProfilesService {
         });
 
         if (!profile) {
-            throw AppException.NotFound(`Profile not found for user ${userId}`);
+            throw ProfilesException.ProfileNotFound(userId);
         }
 
         return profile;
@@ -62,7 +68,7 @@ export class ProfilesService {
         });
 
         if (existingProfile) {
-            throw AppException.BadRequest(`Profile for user ${userId} already exists`);
+            throw ProfilesException.ProfileAlreadyExists(userId);
         }
 
         // Create empty profile or with provided data
@@ -92,7 +98,7 @@ export class ProfilesService {
         });
 
         if (!profile) {
-            throw AppException.NotFound(`Profile not found for user ${userId}`);
+            throw ProfilesException.ProfileNotFound(userId);
         }
 
         // Update profile with provided data
@@ -114,7 +120,7 @@ export class ProfilesService {
         });
 
         if (!profile) {
-            throw AppException.NotFound(`Profile not found for user ${userId}`);
+            throw ProfilesException.ProfileNotFound(userId);
         }
 
         await this.profilesRepository.remove(profile);
