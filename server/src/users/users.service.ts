@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from './users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AppException } from '../shared/exceptions/exceptions';
+import { UsersExceptions } from './exceptions';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { hashPassword } from '../shared/utils';
 import { ProfilesService } from '../profiles/profiles.service';
@@ -22,7 +22,7 @@ export class UsersService {
     async findUserById(id: number) {
         const user = await this.usersRepository.findOne({ where: { id } });
         if (!user) {
-            throw AppException.NotFound(`User not found`);
+            throw UsersExceptions.userNotFound();
         }
 
         return user;
@@ -31,7 +31,7 @@ export class UsersService {
     async findUserByUsername(name: string) {
         const user = await this.usersRepository.findOne({ where: { username: name } });
         if (!user) {
-            throw AppException.NotFound(`User not found`);
+            throw UsersExceptions.userNotFound();
         }
 
         return user;
@@ -40,7 +40,7 @@ export class UsersService {
     async createUser(userDto: CreateUserDto, skipPasswordHashing = false) {
         const existingUser = await this.usersRepository.findOne({ where: { username: userDto.username } });
         if (existingUser) {
-            throw AppException.BadRequest(`User with username ${userDto.username} already exists`);
+            throw UsersExceptions.userAlreadyExists();
         }
 
         const user = this.usersRepository.create({
@@ -58,7 +58,7 @@ export class UsersService {
     async updateUser(userId: number, updateUserDto: UpdateUserDto) {
         const existingUser = await this.usersRepository.findOne({ where: { id: userId } });
         if (!existingUser) {
-            throw AppException.NotFound(`User not found`);
+            throw UsersExceptions.userNotFound();
         }
 
         // Create a copy of the DTO to avoid modifying the original
@@ -71,7 +71,7 @@ export class UsersService {
             });
 
             if (userWithSameUsername) {
-                throw AppException.BadRequest(`User with username ${updatedFields.username} already exists`);
+                throw UsersExceptions.userAlreadyExists();
             }
         }
 
@@ -87,11 +87,11 @@ export class UsersService {
     async deleteUser(id: number, currentUser: { id: number; role: string }) {
         const user = await this.usersRepository.findOne({ where: { id } });
         if (!user) {
-            throw AppException.NotFound(`User not found`);
+            throw UsersExceptions.userNotFound();
         }
 
         if (currentUser.id !== id && currentUser.role !== 'admin') {
-            throw AppException.Forbidden(`You don't have permission to delete this user`);
+            throw UsersExceptions.insufficientPermission();
         }
 
         return this.usersRepository.remove(user);

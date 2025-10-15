@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ERROR_MESSAGES } from '../constants/error-messages';
 
-// TODO: consider adding exception for each moodule or user all in one file
 export class AppException {
     static BadRequest(
         message: string = ERROR_MESSAGES.GENERAL.BAD_REQUEST,
