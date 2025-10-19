@@ -1,35 +1,35 @@
 /* Layout Component Styles */
 .layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .layout-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Main content with fixed header */
 .main-with-fixed-header {
-  padding-top: 80px; /* Space for fixed header */
+    padding-top: 80px; /* Space for fixed header */
 }
 
 /* Body padding adjustment for fixed header */
 body.has-fixed-header {
-  padding-top: 0; /* Reset any existing padding */
+    padding-top: 0; /* Reset any existing padding */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .main-with-fixed-header {
-    padding-top: 70px;
-  }
+    .main-with-fixed-header {
+        padding-top: 70px;
+    }
 }
 
 @media (max-width: 480px) {
-  .main-with-fixed-header {
-    padding-top: 65px;
-  }
+    .main-with-fixed-header {
+        padding-top: 65px;
+    }
 }

@@ -10,7 +10,12 @@ interface LayoutProps {
     className?: string;
 }
 
-export const Layout = ({ children, headerVariant = 'compact', showFooter = true, className = '' }: LayoutProps) => {
+export const Layout = ({
+    children,
+    headerVariant = 'compact',
+    showFooter = true,
+    className = '',
+}: LayoutProps) => {
     useEffect(() => {
         if (headerVariant === 'compact') {
             document.body.classList.add('has-fixed-header');
@@ -27,7 +32,9 @@ export const Layout = ({ children, headerVariant = 'compact', showFooter = true,
         <div className={`layout ${className}`}>
             <Header variant={headerVariant} />
 
-            <main className={`layout-main ${headerVariant === 'compact' ? 'main-with-fixed-header' : ''}`}>
+            <main
+                className={`layout-main ${headerVariant === 'compact' ? 'main-with-fixed-header' : ''}`}
+            >
                 {children}
             </main>
 
