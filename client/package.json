@@ -10,6 +10,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:fix": "npm run format && npm run lint:fix",
     "preview": "vite preview",
     "restart": "echo 'Restarting Vite server...' && npm run dev"
   },
