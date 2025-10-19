@@ -34,7 +34,7 @@ export const useLogin = () => {
         mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
             return authAPI.login(credentials);
         },
-        onSuccess: (data) => {
+        onSuccess: data => {
             localStorage.setItem('authToken', data.access_token);
 
             queryClient.invalidateQueries({ queryKey: authKeys.user() });

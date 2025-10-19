@@ -16,7 +16,7 @@ export const Register = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
+        setFormData(prev => ({
             ...prev,
             [name]: value,
         }));
@@ -74,7 +74,9 @@ export const Register = () => {
 
     const validationErrors = validateForm();
     const hasValidationErrors =
-        formData.username !== '' || formData.password !== '' || formData.confirmPassword !== '' ? validationErrors : [];
+        formData.username !== '' || formData.password !== '' || formData.confirmPassword !== ''
+            ? validationErrors
+            : [];
 
     return (
         <Layout headerVariant="compact">
@@ -93,7 +95,9 @@ export const Register = () => {
                                         {error}
                                     </p>
                                 ))}
-                                {registerMutation.error && <p className="error-message">{getErrorMessage()}</p>}
+                                {registerMutation.error && (
+                                    <p className="error-message">{getErrorMessage()}</p>
+                                )}
                             </div>
                         )}
 

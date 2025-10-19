@@ -15,7 +15,7 @@ export const Login = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
+        setFormData(prev => ({
             ...prev,
             [name]: value,
         }));
@@ -66,7 +66,8 @@ export const Login = () => {
     };
 
     const validationErrors = validateForm();
-    const hasValidationErrors = formData.username !== '' || formData.password !== '' ? validationErrors : [];
+    const hasValidationErrors =
+        formData.username !== '' || formData.password !== '' ? validationErrors : [];
 
     return (
         <Layout headerVariant="compact">
@@ -85,7 +86,9 @@ export const Login = () => {
                                         {error}
                                     </p>
                                 ))}
-                                {loginMutation.error && <p className="error-message">{getErrorMessage()}</p>}
+                                {loginMutation.error && (
+                                    <p className="error-message">{getErrorMessage()}</p>
+                                )}
                             </div>
                         )}
 

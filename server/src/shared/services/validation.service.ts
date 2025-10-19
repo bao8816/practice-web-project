@@ -24,8 +24,8 @@ export class ValidationService {
             where: { id: In(userIds) },
         });
         if (users.length !== userIds.length) {
-            const foundIds = users.map((u) => u.id);
-            const missingIds = userIds.filter((id) => !foundIds.includes(id));
+            const foundIds = users.map(u => u.id);
+            const missingIds = userIds.filter(id => !foundIds.includes(id));
             throw AppException.NotFound(`Users with IDs ${missingIds.join(', ')} do not exist`);
         }
         return users;

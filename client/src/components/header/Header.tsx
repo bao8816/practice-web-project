@@ -8,7 +8,11 @@ interface HeaderProps {
     showSubtitle?: boolean;
 }
 
-export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true }: HeaderProps) => {
+export const Header = ({
+    variant = 'hero',
+    showTitle = true,
+    showSubtitle = true,
+}: HeaderProps) => {
     const { isAuthenticated } = useAuth();
     const logoutMutation = useLogout();
 
@@ -22,7 +26,9 @@ export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true
                 <div className="header-main">
                     <Link to="/" className="header-logo">
                         {showTitle && (
-                            <h1 className={`header-title ${variant === 'compact' ? 'title-compact' : 'title-hero'}`}>
+                            <h1
+                                className={`header-title ${variant === 'compact' ? 'title-compact' : 'title-hero'}`}
+                            >
                                 ShopSmart
                             </h1>
                         )}
