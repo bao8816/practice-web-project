@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useAuth, useLogout } from '../../hooks/auth';
+import { useAuth } from '../../hooks/auth';
+import { useMyProfile } from '../../hooks/profiles';
+import { UserMenu } from '../user-menu';
 import './Header.css';
 
 interface HeaderProps {
@@ -8,17 +10,9 @@ interface HeaderProps {
     showSubtitle?: boolean;
 }
 
-export const Header = ({
-    variant = 'hero',
-    showTitle = true,
-    showSubtitle = true,
-}: HeaderProps) => {
+export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true }: HeaderProps) => {
     const { isAuthenticated } = useAuth();
-    const logoutMutation = useLogout();
-
-    const handleLogout = () => {
-        logoutMutation.mutate();
-    };
+    const { data: profile } = useMyProfile();
 
     return (
         <header className={`header ${variant === 'compact' ? 'header-compact' : 'header-hero'}`}>
@@ -26,9 +20,7 @@ export const Header = ({
                 <div className="header-main">
                     <Link to="/" className="header-logo">
                         {showTitle && (
-                            <h1
-                                className={`header-title ${variant === 'compact' ? 'title-compact' : 'title-hero'}`}
-                            >
+                            <h1 className={`header-title ${variant === 'compact' ? 'title-compact' : 'title-hero'}`}>
                                 ShopSmart
                             </h1>
                         )}
@@ -54,16 +46,7 @@ export const Header = ({
 
                 <div className="header-auth">
                     {isAuthenticated ? (
-                        <>
-                            <span className="welcome-text">Welcome back!</span>
-                            <button
-                                onClick={handleLogout}
-                                className="auth-btn logout-btn"
-                                disabled={logoutMutation.isPending}
-                            >
-                                {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
-                            </button>
-                        </>
+                        <UserMenu username={profile?.fullName || 'User'} avatarUrl={profile?.avatarUrl} />
                     ) : (
                         <>
                             <Link to="/login" className="auth-btn login-btn">
