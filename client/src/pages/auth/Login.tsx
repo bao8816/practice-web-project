@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Layout } from '../../components/layout/Layout';
+import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
 import './Auth.css';
 import { useLogin } from '../../hooks/auth';
