@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
+import { ErrorDisplay } from '../../components/error';
 import './Auth.css';
 import { useRegister } from '../../hooks/auth';
-import type { AxiosError } from 'axios';
+import { useApiError } from '../../hooks/error';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -16,67 +17,31 @@ export const Register = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
 
+        // Clear API error when user types
         if (registerMutation.error) {
             registerMutation.reset();
         }
     };
 
-    const validateForm = (): string[] => {
-        const newErrors: string[] = [];
-
-        if (!formData.username.trim()) {
-            newErrors.push('Username is required');
-        }
-
-        if (!formData.password) {
-            newErrors.push('Password is required');
-        } else if (formData.password.length < 4) {
-            newErrors.push('Password must be at least 4 characters long');
-        }
-
-        if (!formData.confirmPassword) {
-            newErrors.push('Please confirm your password');
-        } else if (formData.password !== formData.confirmPassword) {
-            newErrors.push('Passwords do not match');
-        }
-
-        return newErrors;
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const validationErrors = validateForm();
-        if (validationErrors.length > 0) {
-            return;
-        }
-
+        // Gửi thẳng request, để server handle validation
         registerMutation.mutate(formData);
     };
 
-    const getErrorMessage = () => {
-        if (!registerMutation.error) return null;
-
-        const error = registerMutation.error as AxiosError<{ message?: string }>;
-        if (error.response?.data?.message) {
-            return error.response.data.message;
-        }
-        if (error.message) {
-            return error.message;
-        }
-        return 'Registration failed. Please try again.';
-    };
-
-    const validationErrors = validateForm();
-    const hasValidationErrors =
-        formData.username !== '' || formData.password !== '' || formData.confirmPassword !== ''
-            ? validationErrors
-            : [];
+    // Use centralized error handling
+    const apiError = useApiError({
+        error: registerMutation.error,
+        fallbackMessage: 'Registration failed. Please try again.',
+        path: '/auth/register',
+        method: 'POST',
+        errorType: 'RegisterError',
+    });
 
     return (
         <Layout headerVariant="compact">
@@ -88,17 +53,13 @@ export const Register = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">
-                        {(hasValidationErrors.length > 0 || registerMutation.error) && (
-                            <div className="auth-errors">
-                                {hasValidationErrors.map((error, index) => (
-                                    <p key={index} className="error-message">
-                                        {error}
-                                    </p>
-                                ))}
-                                {registerMutation.error && (
-                                    <p className="error-message">{getErrorMessage()}</p>
-                                )}
-                            </div>
+                        {apiError && (
+                            <ErrorDisplay
+                                error={apiError}
+                                onDismiss={() => registerMutation.reset()}
+                                onRetry={() => registerMutation.mutate(formData)}
+                                // compact
+                            />
                         )}
 
                         <div className="form-group">
@@ -152,15 +113,7 @@ export const Register = () => {
                             />
                         </div>
 
-                        {registerMutation.error && (
-                            <div className="error-message">{registerMutation.error.message}</div>
-                        )}
-
-                        <button
-                            type="submit"
-                            disabled={registerMutation.isPending || hasValidationErrors.length > 0}
-                            className="auth-button"
-                        >
+                        <button type="submit" disabled={registerMutation.isPending} className="auth-button">
                             {registerMutation.isPending ? 'Creating Account...' : 'Create Account'}
                         </button>
                     </form>

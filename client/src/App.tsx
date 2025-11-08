@@ -1,17 +1,13 @@
 import './App.css';
-import { Routes } from 'react-router-dom';
-import { AuthRoutes } from './pages/auth';
-import { HomeRoutes } from './pages/home';
-import { ProfileRoutes } from './pages/profiles';
+import { useRoutes } from 'react-router-dom';
+import { homeRoutes } from './pages/home';
+import { authRoutes } from './pages/auth';
+import { profileRoutes } from './pages/profiles';
 
 function App() {
-    return (
-        <Routes>
-            <HomeRoutes />
-            <AuthRoutes />
-            <ProfileRoutes />
-        </Routes>
-    );
+    const routes = useRoutes([...homeRoutes, ...authRoutes, ...profileRoutes]);
+
+    return routes;
 }
 
 export default App;

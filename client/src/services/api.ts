@@ -13,26 +13,30 @@ export const apiClient = axios.create({
 
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
-    config => {
+    (config) => {
         const token = localStorage.getItem('authToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
-    error => {
+    (error) => {
         return Promise.reject(error);
     }
 );
 
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
-    response => response,
-    error => {
+    (response) => response,
+    (error) => {
         if (error.response?.status === 401) {
-            // Token expired or invalid, clear it
-            localStorage.removeItem('authToken');
-            window.location.href = '/login';
+            // Don't redirect if this is a login attempt
+            const isLoginRequest = error.config?.url?.includes('/auth/login');
+            if (!isLoginRequest) {
+                // Token expired or invalid, clear it
+                localStorage.removeItem('authToken');
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }

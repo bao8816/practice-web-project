@@ -1,6 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authAPI } from '../../services';
+import type { AxiosError } from 'axios';
+import type { ApiError } from '../../types/errors';
+import { getErrorMessage } from '../../types/errors';
 
 interface LoginCredentials {
     username: string;
@@ -34,17 +37,15 @@ export const useLogin = () => {
         mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
             return authAPI.login(credentials);
         },
-        onSuccess: data => {
+        onSuccess: (data) => {
             localStorage.setItem('authToken', data.access_token);
 
             queryClient.invalidateQueries({ queryKey: authKeys.user() });
 
             navigate('/');
         },
-        onError: (error: any) => {
-            console.error('Login error:', error);
-            // Error is automatically handled by React Query
-            // You can access error in component using mutation.error
+        onError: (error: AxiosError<ApiError>) => {
+            console.error('Login error:', getErrorMessage(error));
         },
     });
 };
@@ -60,8 +61,9 @@ export const useRegister = () => {
             // Navigate to login page after successful registration
             navigate('/login');
         },
-        onError: (error: any) => {
-            console.error('Registration error:', error);
+        onError: (error: AxiosError<ApiError>) => {
+            // Simple error logging - could be replaced with toast/alert
+            console.error('Registration error:', getErrorMessage(error));
         },
     });
 };

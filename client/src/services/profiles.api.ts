@@ -1,9 +1,5 @@
 import { apiClient } from './api';
-import type {
-    ProfileResponse,
-    UpdateProfileRequest,
-    CreateProfileRequest,
-} from '../types/profiles';
+import type { ProfileResponse, UpdateProfileRequest, CreateProfileRequest } from '../types/profile';
 
 // Profile API functions
 export const profilesAPI = {
@@ -32,10 +28,7 @@ export const profilesAPI = {
     },
 
     // Create profile for specific user (admin only)
-    createProfile: async (
-        userId: number,
-        data?: CreateProfileRequest
-    ): Promise<ProfileResponse> => {
+    createProfile: async (userId: number, data?: CreateProfileRequest): Promise<ProfileResponse> => {
         const response = await apiClient.post<ProfileResponse>(`/profiles/${userId}`, data);
         return response.data;
     },

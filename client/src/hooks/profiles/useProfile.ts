@@ -1,17 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { profilesAPI } from '../../services';
+import type { ProfileResponse, UpdateProfileRequest, CreateProfileRequest } from '../../types/profile';
 import type { AxiosError } from 'axios';
-import type {
-    ProfileData,
-    ProfileResponse,
-    Gender,
-    UpdateProfileRequest,
-    CreateProfileRequest,
-} from '../../types/profiles';
-import type { ApiError } from '../../types/api';
-
-// Re-export types for convenience
-export type { ProfileData, ProfileResponse, Gender, UpdateProfileRequest, CreateProfileRequest };
+import { getErrorMessage } from '../../types/errors';
 
 export const profileKeys = {
     all: ['profiles'] as const,
@@ -19,14 +10,13 @@ export const profileKeys = {
     myProfile: () => [...profileKeys.all, 'my-profile'] as const,
 };
 
-// Hook to get current user's profile
 export const useMyProfile = () => {
     return useQuery({
         queryKey: profileKeys.myProfile(),
         queryFn: async (): Promise<ProfileResponse> => {
             return profilesAPI.getMyProfile();
         },
-        retry: (failureCount, error: AxiosError<ApiError>) => {
+        retry: (failureCount, error: AxiosError) => {
             // Don't retry if profile doesn't exist (404)
             if (error?.response?.status === 404) {
                 return false;
@@ -44,7 +34,7 @@ export const useProfile = (userId: number) => {
             return profilesAPI.getProfile(userId);
         },
         enabled: !!userId,
-        retry: (failureCount, error: AxiosError<ApiError>) => {
+        retry: (failureCount, error: AxiosError) => {
             // Don't retry if profile doesn't exist (404)
             if (error?.response?.status === 404) {
                 return false;
@@ -62,14 +52,14 @@ export const useUpdateMyProfile = () => {
         mutationFn: async (data: UpdateProfileRequest): Promise<ProfileResponse> => {
             return profilesAPI.updateMyProfile(data);
         },
-        onSuccess: data => {
+        onSuccess: (data) => {
             // Update the cached profile data
             queryClient.setQueryData(profileKeys.myProfile(), data);
             // Also invalidate to refetch if needed
             queryClient.invalidateQueries({ queryKey: profileKeys.myProfile() });
         },
-        onError: (error: AxiosError<ApiError>) => {
-            console.error('Update my profile error:', error);
+        onError: (error: AxiosError) => {
+            console.error('Update my profile error:', getErrorMessage(error));
         },
     });
 };
@@ -88,12 +78,12 @@ export const useUpdateProfile = () => {
         }): Promise<ProfileResponse> => {
             return profilesAPI.updateProfile(userId, data);
         },
-        onSuccess: data => {
+        onSuccess: (data) => {
             // Invalidate and refetch profile data
             queryClient.invalidateQueries({ queryKey: profileKeys.profile(data.userId) });
         },
-        onError: (error: AxiosError<ApiError>) => {
-            console.error('Update profile error:', error);
+        onError: (error: AxiosError) => {
+            console.error('Update profile error:', getErrorMessage(error));
         },
     });
 };
@@ -112,12 +102,12 @@ export const useCreateProfile = () => {
         }): Promise<ProfileResponse> => {
             return profilesAPI.createProfile(userId, data);
         },
-        onSuccess: data => {
+        onSuccess: (data) => {
             // Invalidate and refetch profile data
             queryClient.invalidateQueries({ queryKey: profileKeys.profile(data.userId) });
         },
-        onError: (error: AxiosError<ApiError>) => {
-            console.error('Create profile error:', error);
+        onError: (error: AxiosError) => {
+            console.error('Profile update error:', getErrorMessage(error));
         },
     });
 };
@@ -134,8 +124,8 @@ export const useDeleteProfile = () => {
             // Remove the profile from cache
             queryClient.removeQueries({ queryKey: profileKeys.profile(userId) });
         },
-        onError: (error: AxiosError<ApiError>) => {
-            console.error('Delete profile error:', error);
+        onError: (error: AxiosError) => {
+            console.error('Delete profile error:', getErrorMessage(error));
         },
     });
 };

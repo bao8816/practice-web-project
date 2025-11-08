@@ -247,28 +247,6 @@
     color: var(--primary-color);
 }
 
-.error-container {
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 1;
-}
-
-.error-message {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 1px solid #fca5a5;
-    border-left: 4px solid #ef4444;
-    color: #991b1b;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
-}
-
-.error-message:last-child {
-    margin-bottom: 0;
-}
-
 /* Animations */
 @keyframes slideInUp {
     from {

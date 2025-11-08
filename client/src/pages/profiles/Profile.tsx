@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { ErrorDisplay } from '../../components/error';
 import { useMyProfile, useUpdateMyProfile } from '../../hooks/profiles';
+import { useApiError } from '../../hooks/error';
+import { Gender, type UpdateProfileRequest } from '../../types/profile';
 import type { AxiosError } from 'axios';
-import { Gender, type UpdateProfileRequest } from '../../types/profiles';
-import type { ApiError } from '../../types/api';
 import './Profile.css';
 
 export const Profile = () => {
@@ -21,7 +22,28 @@ export const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-    // Update form data when profile loads
+    // Create ApiError for validation errors
+    const validationApiError = useMemo(() => {
+        if (validationErrors.length === 0) return null;
+
+        return {
+            statusCode: 400,
+            timestamp: new Date().toISOString(),
+            path: '/profile',
+            method: 'PUT',
+            message: validationErrors,
+            error: 'Validation Error',
+        };
+    }, [validationErrors]);
+
+    // Use centralized error handling for update mutation
+    const updateApiError = useApiError({
+        error: updateProfileMutation.error,
+        fallbackMessage: 'Failed to update profile. Please try again.',
+        path: '/profile',
+        method: 'PUT',
+        errorType: 'UpdateError',
+    }); // Update form data when profile loads
     useEffect(() => {
         if (profile) {
             setFormData({
@@ -143,34 +165,25 @@ export const Profile = () => {
                 <div className="profile-header">
                     <h1>My Profile</h1>
                     {profileExists && !isEditing && (
-                        <button
-                            type="button"
-                            onClick={() => setIsEditing(true)}
-                            className="edit-btn"
-                        >
+                        <button type="button" onClick={() => setIsEditing(true)} className="edit-btn">
                             Edit Profile
                         </button>
                     )}
                 </div>
 
-                {/* Show errors */}
-                {validationErrors.length > 0 && (
-                    <div className="error-container">
-                        {validationErrors.map((error, index) => (
-                            <div key={index} className="error-message">
-                                {error}
-                            </div>
-                        ))}
-                    </div>
+                {/* Show validation errors */}
+                {validationApiError && (
+                    <ErrorDisplay error={validationApiError} onDismiss={() => setValidationErrors([])} compact />
                 )}
 
-                {updateProfileMutation.isError && (
-                    <div className="error-container">
-                        <div className="error-message">
-                            {(updateProfileMutation.error as AxiosError<ApiError>)?.response?.data
-                                ?.message || 'Failed to update profile. Please try again.'}
-                        </div>
-                    </div>
+                {/* Show mutation errors */}
+                {updateApiError && (
+                    <ErrorDisplay
+                        error={updateApiError}
+                        onDismiss={() => updateProfileMutation.reset()}
+                        onRetry={() => updateProfileMutation.mutate(formData)}
+                        compact
+                    />
                 )}
 
                 {/* Profile not found - show create form */}
@@ -195,21 +208,14 @@ export const Profile = () => {
                                 placeholder="Enter your full name"
                             />
                         ) : (
-                            <div className="form-display">
-                                {profile?.fullName || 'Not provided'}
-                            </div>
+                            <div className="form-display">{profile?.fullName || 'Not provided'}</div>
                         )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="gender">Gender</label>
                         {isEditing || isNotFoundError ? (
-                            <select
-                                id="gender"
-                                name="gender"
-                                value={formData.gender || ''}
-                                onChange={handleChange}
-                            >
+                            <select id="gender" name="gender" value={formData.gender || ''} onChange={handleChange}>
                                 <option value="">Select gender</option>
                                 <option value={Gender.MALE}>Male</option>
                                 <option value={Gender.FEMALE}>Female</option>
@@ -218,8 +224,7 @@ export const Profile = () => {
                         ) : (
                             <div className="form-display">
                                 {profile?.gender
-                                    ? profile.gender.charAt(0).toUpperCase() +
-                                      profile.gender.slice(1)
+                                    ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
                                     : 'Not provided'}
                             </div>
                         )}
@@ -236,9 +241,7 @@ export const Profile = () => {
                                 onChange={handleChange}
                             />
                         ) : (
-                            <div className="form-display">
-                                {formatDate(profile?.dateOfBirth) || 'Not provided'}
-                            </div>
+                            <div className="form-display">{formatDate(profile?.dateOfBirth) || 'Not provided'}</div>
                         )}
                     </div>
 
@@ -254,9 +257,7 @@ export const Profile = () => {
                                 placeholder="Enter your phone number"
                             />
                         ) : (
-                            <div className="form-display">
-                                {profile?.phoneNumber || 'Not provided'}
-                            </div>
+                            <div className="form-display">{profile?.phoneNumber || 'Not provided'}</div>
                         )}
                     </div>
 
@@ -279,9 +280,8 @@ export const Profile = () => {
                                             src={profile.avatarUrl}
                                             alt="Avatar"
                                             className="avatar-preview"
-                                            onError={e => {
-                                                (e.target as HTMLImageElement).style.display =
-                                                    'none';
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
                                             }}
                                         />
                                         <span className="avatar-url">{profile.avatarUrl}</span>
@@ -296,11 +296,7 @@ export const Profile = () => {
                     {/* Form actions */}
                     {(isEditing || isNotFoundError) && (
                         <div className="form-actions">
-                            <button
-                                type="submit"
-                                disabled={updateProfileMutation.isPending}
-                                className="submit-btn"
-                            >
+                            <button type="submit" disabled={updateProfileMutation.isPending} className="submit-btn">
                                 {updateProfileMutation.isPending
                                     ? 'Saving...'
                                     : isNotFoundError
@@ -325,12 +321,10 @@ export const Profile = () => {
                 {profileExists && (
                     <div className="profile-metadata">
                         <div className="metadata-item">
-                            <strong>Profile Created:</strong>{' '}
-                            {new Date(profile.createdAt).toLocaleDateString()}
+                            <strong>Profile Created:</strong> {new Date(profile.createdAt).toLocaleDateString()}
                         </div>
                         <div className="metadata-item">
-                            <strong>Last Updated:</strong>{' '}
-                            {new Date(profile.updatedAt).toLocaleDateString()}
+                            <strong>Last Updated:</strong> {new Date(profile.updatedAt).toLocaleDateString()}
                         </div>
                     </div>
                 )}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
+import { ErrorDisplay } from '../../components/error';
 import './Auth.css';
 import { useLogin } from '../../hooks/auth';
-import type { AxiosError } from 'axios';
+import { useApiError } from '../../hooks/error';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -13,61 +14,32 @@ export const Login = () => {
 
     const loginMutation = useLogin();
 
+    // Use centralized error handling
+    const apiError = useApiError({
+        error: loginMutation.error,
+        fallbackMessage: 'Login failed. Please try again.',
+        path: '/auth/login',
+        method: 'POST',
+        errorType: 'LoginError',
+    });
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
 
+        // Clear API error when user types
         if (loginMutation.error) {
             loginMutation.reset();
         }
     };
 
-    const validateForm = (): string[] => {
-        const newErrors: string[] = [];
-
-        if (!formData.username.trim()) {
-            newErrors.push('Username is required');
-        }
-
-        if (!formData.password) {
-            newErrors.push('Password is required');
-        }
-
-        return newErrors;
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const validationErrors = validateForm();
-        if (validationErrors.length > 0) {
-            // For validation errors, we still use local state
-            // But for API errors, we use React Query's error handling
-            return;
-        }
-
         loginMutation.mutate(formData);
     };
-
-    const getErrorMessage = () => {
-        if (!loginMutation.error) return null;
-
-        const error = loginMutation.error as AxiosError<{ message?: string }>;
-        if (error.response?.data?.message) {
-            return error.response.data.message;
-        }
-        if (error.message) {
-            return error.message;
-        }
-        return 'Login failed. Please try again.';
-    };
-
-    const validationErrors = validateForm();
-    const hasValidationErrors =
-        formData.username !== '' || formData.password !== '' ? validationErrors : [];
 
     return (
         <Layout headerVariant="compact">
@@ -79,19 +51,14 @@ export const Login = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">
-                        {(hasValidationErrors.length > 0 || loginMutation.error) && (
-                            <div className="auth-errors">
-                                {hasValidationErrors.map((error, index) => (
-                                    <p key={index} className="error-message">
-                                        {error}
-                                    </p>
-                                ))}
-                                {loginMutation.error && (
-                                    <p className="error-message">{getErrorMessage()}</p>
-                                )}
-                            </div>
+                        {apiError && (
+                            <ErrorDisplay
+                                error={apiError}
+                                onDismiss={() => loginMutation.reset()}
+                                onRetry={() => loginMutation.mutate(formData)}
+                                compact
+                            />
                         )}
-
                         <div className="form-group">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -108,7 +75,6 @@ export const Login = () => {
                                 disabled={loginMutation.isPending}
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="password" className="form-label">
                                 Password
@@ -125,12 +91,7 @@ export const Login = () => {
                                 disabled={loginMutation.isPending}
                             />
                         </div>
-
-                        <button
-                            type="submit"
-                            disabled={loginMutation.isPending || hasValidationErrors.length > 0}
-                            className="auth-button"
-                        >
+                        <button type="submit" disabled={loginMutation.isPending} className="auth-button">
                             {loginMutation.isPending ? 'Signing In...' : 'Sign In'}
                         </button>
                     </form>
