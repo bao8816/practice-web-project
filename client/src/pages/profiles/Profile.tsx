@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Layout } from '../../components/layout/Layout';
+import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
 import { useMyProfile, useUpdateMyProfile } from '../../hooks/profiles';
 import { useApiError } from '../../hooks/error';
@@ -284,7 +284,9 @@ export const Profile = () => {
                                                 (e.target as HTMLImageElement).style.display = 'none';
                                             }}
                                         />
-                                        <span className="avatar-url">{profile.avatarUrl}</span>
+                                        <span className="avatar-url">
+                                            <a href={`${profile.avatarUrl}`}>Avatar URL</a>
+                                        </span>
                                     </div>
                                 ) : (
                                     'Not provided'
