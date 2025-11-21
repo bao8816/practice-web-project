@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
+import { Button, Input, Card } from '../../components/ui';
 import './Auth.css';
-import { useLogin } from '../../hooks/auth';
+import { useAuth, useLogin } from '../../hooks/auth';
 import { useApiError } from '../../hooks/error';
 
 export const Login = () => {
+    const { isAuthenticated } = useAuth();
+
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -14,7 +17,6 @@ export const Login = () => {
 
     const loginMutation = useLogin();
 
-    // Use centralized error handling
     const apiError = useApiError({
         error: loginMutation.error,
         fallbackMessage: 'Login failed. Please try again.',
@@ -23,6 +25,10 @@ export const Login = () => {
         errorType: 'LoginError',
     });
 
+    if (isAuthenticated) {
+        return <Navigate to="/" replace />;
+    }
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -30,7 +36,6 @@ export const Login = () => {
             [name]: value,
         }));
 
-        // Clear API error when user types
         if (loginMutation.error) {
             loginMutation.reset();
         }
@@ -44,7 +49,7 @@ export const Login = () => {
     return (
         <Layout headerVariant="compact">
             <div className="auth-container">
-                <div className="auth-card">
+                <Card variant="gradient-border" padding="lg" className="auth-card">
                     <div className="auth-header">
                         <h2 className="auth-title">Welcome Back</h2>
                         <p className="auth-subtitle">Sign in to your account</p>
@@ -59,41 +64,36 @@ export const Login = () => {
                                 compact
                             />
                         )}
-                        <div className="form-group">
-                            <label htmlFor="username" className="form-label">
-                                Username
-                            </label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter your username"
-                                autoComplete="username"
-                                disabled={loginMutation.isPending}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password" className="form-label">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter your password"
-                                autoComplete="current-password"
-                                disabled={loginMutation.isPending}
-                            />
-                        </div>
-                        <button type="submit" disabled={loginMutation.isPending} className="auth-button">
-                            {loginMutation.isPending ? 'Signing In...' : 'Sign In'}
-                        </button>
+
+                        <Input
+                            label="Username"
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder="Enter your username"
+                            autoComplete="username"
+                            disabled={loginMutation.isPending}
+                            required
+                        />
+
+                        <Input
+                            label="Password"
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                            autoComplete="current-password"
+                            disabled={loginMutation.isPending}
+                            required
+                        />
+
+                        <Button type="submit" variant="primary" size="lg" loading={loginMutation.isPending} fullWidth>
+                            Sign In
+                        </Button>
                     </form>
 
                     <div className="auth-footer">
@@ -104,7 +104,7 @@ export const Login = () => {
                             </Link>
                         </p>
                     </div>
-                </div>
+                </Card>
             </div>
         </Layout>
     );

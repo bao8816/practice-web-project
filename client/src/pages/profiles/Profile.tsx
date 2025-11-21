@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
+import { Button, Input, Select, Card } from '../../components/ui';
 import { useMyProfile, useUpdateMyProfile } from '../../hooks/profiles';
 import { useApiError } from '../../hooks/error';
 import { Gender, type UpdateProfileRequest } from '../../types/profile';
@@ -22,7 +23,6 @@ export const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-    // Create ApiError for validation errors
     const validationApiError = useMemo(() => {
         if (validationErrors.length === 0) return null;
 
@@ -36,14 +36,14 @@ export const Profile = () => {
         };
     }, [validationErrors]);
 
-    // Use centralized error handling for update mutation
     const updateApiError = useApiError({
         error: updateProfileMutation.error,
         fallbackMessage: 'Failed to update profile. Please try again.',
         path: '/profile',
         method: 'PUT',
         errorType: 'UpdateError',
-    }); // Update form data when profile loads
+    });
+
     useEffect(() => {
         if (profile) {
             setFormData({
@@ -63,12 +63,10 @@ export const Profile = () => {
             [name]: value === '' ? undefined : value,
         }));
 
-        // Clear validation errors when user starts typing
         if (validationErrors.length > 0) {
             setValidationErrors([]);
         }
 
-        // Clear mutation errors
         if (updateProfileMutation.error) {
             updateProfileMutation.reset();
         }
@@ -101,7 +99,6 @@ export const Profile = () => {
             return;
         }
 
-        // Filter out empty strings and undefined values
         const cleanData: UpdateProfileRequest = {};
         Object.entries(formData).forEach(([key, value]) => {
             if (value !== undefined && value !== '') {
@@ -114,13 +111,11 @@ export const Profile = () => {
             setIsEditing(false);
             setValidationErrors([]);
         } catch (error) {
-            // Error is handled by the mutation's onError callback
             console.error('Profile update failed:', error);
         }
     };
 
     const handleCancel = () => {
-        // Reset form data to original profile data
         if (profile) {
             setFormData({
                 fullName: profile.fullName || '',
@@ -155,7 +150,6 @@ export const Profile = () => {
         );
     }
 
-    // Handle case where profile doesn't exist yet
     const profileExists = profile && !isError;
     const isNotFoundError = isError && (error as AxiosError)?.response?.status === 404;
 
@@ -165,18 +159,16 @@ export const Profile = () => {
                 <div className="profile-header">
                     <h1>My Profile</h1>
                     {profileExists && !isEditing && (
-                        <button type="button" onClick={() => setIsEditing(true)} className="edit-btn">
+                        <Button variant="primary" onClick={() => setIsEditing(true)}>
                             Edit Profile
-                        </button>
+                        </Button>
                     )}
                 </div>
 
-                {/* Show validation errors */}
                 {validationApiError && (
                     <ErrorDisplay error={validationApiError} onDismiss={() => setValidationErrors([])} compact />
                 )}
 
-                {/* Show mutation errors */}
                 {updateApiError && (
                     <ErrorDisplay
                         error={updateApiError}
@@ -186,20 +178,18 @@ export const Profile = () => {
                     />
                 )}
 
-                {/* Profile not found - show create form */}
                 {isNotFoundError && (
-                    <div className="profile-not-found">
+                    <Card variant="outlined" padding="md" className="profile-not-found">
                         <h2>Create Your Profile</h2>
                         <p>You don't have a profile yet. Fill out the form below to create one.</p>
-                    </div>
+                    </Card>
                 )}
 
-                {/* Profile form */}
-                <form onSubmit={handleSubmit} className="profile-form">
-                    <div className="form-group">
-                        <label htmlFor="fullName">Full Name</label>
+                <Card variant="elevated" padding="lg">
+                    <form onSubmit={handleSubmit} className="profile-form">
                         {isEditing || isNotFoundError ? (
-                            <input
+                            <Input
+                                label="Full Name"
                                 type="text"
                                 id="fullName"
                                 name="fullName"
@@ -208,32 +198,40 @@ export const Profile = () => {
                                 placeholder="Enter your full name"
                             />
                         ) : (
-                            <div className="form-display">{profile?.fullName || 'Not provided'}</div>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="gender">Gender</label>
-                        {isEditing || isNotFoundError ? (
-                            <select id="gender" name="gender" value={formData.gender || ''} onChange={handleChange}>
-                                <option value="">Select gender</option>
-                                <option value={Gender.MALE}>Male</option>
-                                <option value={Gender.FEMALE}>Female</option>
-                                <option value={Gender.OTHER}>Other</option>
-                            </select>
-                        ) : (
-                            <div className="form-display">
-                                {profile?.gender
-                                    ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
-                                    : 'Not provided'}
+                            <div className="form-group">
+                                <label>Full Name</label>
+                                <div className="form-display">{profile?.fullName || 'Not provided'}</div>
                             </div>
                         )}
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="dateOfBirth">Date of Birth</label>
                         {isEditing || isNotFoundError ? (
-                            <input
+                            <Select
+                                label="Gender"
+                                id="gender"
+                                name="gender"
+                                value={formData.gender || ''}
+                                onChange={handleChange}
+                                options={[
+                                    { value: '', label: 'Select gender' },
+                                    { value: Gender.MALE, label: 'Male' },
+                                    { value: Gender.FEMALE, label: 'Female' },
+                                    { value: Gender.OTHER, label: 'Other' },
+                                ]}
+                            />
+                        ) : (
+                            <div className="form-group">
+                                <label>Gender</label>
+                                <div className="form-display">
+                                    {profile?.gender
+                                        ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
+                                        : 'Not provided'}
+                                </div>
+                            </div>
+                        )}
+
+                        {isEditing || isNotFoundError ? (
+                            <Input
+                                label="Date of Birth"
                                 type="date"
                                 id="dateOfBirth"
                                 name="dateOfBirth"
@@ -241,14 +239,15 @@ export const Profile = () => {
                                 onChange={handleChange}
                             />
                         ) : (
-                            <div className="form-display">{formatDate(profile?.dateOfBirth) || 'Not provided'}</div>
+                            <div className="form-group">
+                                <label>Date of Birth</label>
+                                <div className="form-display">{formatDate(profile?.dateOfBirth) || 'Not provided'}</div>
+                            </div>
                         )}
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="phoneNumber">Phone Number</label>
                         {isEditing || isNotFoundError ? (
-                            <input
+                            <Input
+                                label="Phone Number"
                                 type="tel"
                                 id="phoneNumber"
                                 name="phoneNumber"
@@ -257,14 +256,15 @@ export const Profile = () => {
                                 placeholder="Enter your phone number"
                             />
                         ) : (
-                            <div className="form-display">{profile?.phoneNumber || 'Not provided'}</div>
+                            <div className="form-group">
+                                <label>Phone Number</label>
+                                <div className="form-display">{profile?.phoneNumber || 'Not provided'}</div>
+                            </div>
                         )}
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="avatarUrl">Avatar URL</label>
                         {isEditing || isNotFoundError ? (
-                            <input
+                            <Input
+                                label="Avatar URL"
                                 type="url"
                                 id="avatarUrl"
                                 name="avatarUrl"
@@ -273,62 +273,64 @@ export const Profile = () => {
                                 placeholder="https://example.com/avatar.jpg"
                             />
                         ) : (
-                            <div className="form-display">
-                                {profile?.avatarUrl ? (
-                                    <div className="avatar-display">
-                                        <img
-                                            src={profile.avatarUrl}
-                                            alt="Avatar"
-                                            className="avatar-preview"
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).style.display = 'none';
-                                            }}
-                                        />
-                                        <span className="avatar-url">
-                                            <a href={`${profile.avatarUrl}`}>Avatar URL</a>
-                                        </span>
-                                    </div>
-                                ) : (
-                                    'Not provided'
+                            <div className="form-group">
+                                <label>Avatar URL</label>
+                                <div className="form-display">
+                                    {profile?.avatarUrl ? (
+                                        <div className="avatar-display">
+                                            <img
+                                                src={profile.avatarUrl}
+                                                alt="Avatar"
+                                                className="avatar-preview"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).style.display = 'none';
+                                                }}
+                                            />
+                                            <span className="avatar-url">
+                                                <a href={`${profile.avatarUrl}`}>Avatar URL</a>
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        'Not provided'
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {(isEditing || isNotFoundError) && (
+                            <div className="form-actions">
+                                <Button
+                                    type="submit"
+                                    variant="primary"
+                                    loading={updateProfileMutation.isPending}
+                                    disabled={updateProfileMutation.isPending}
+                                >
+                                    {isNotFoundError ? 'Create Profile' : 'Save Changes'}
+                                </Button>
+                                {isEditing && (
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={handleCancel}
+                                        disabled={updateProfileMutation.isPending}
+                                    >
+                                        Cancel
+                                    </Button>
                                 )}
                             </div>
                         )}
-                    </div>
+                    </form>
+                </Card>
 
-                    {/* Form actions */}
-                    {(isEditing || isNotFoundError) && (
-                        <div className="form-actions">
-                            <button type="submit" disabled={updateProfileMutation.isPending} className="submit-btn">
-                                {updateProfileMutation.isPending
-                                    ? 'Saving...'
-                                    : isNotFoundError
-                                      ? 'Create Profile'
-                                      : 'Save Changes'}
-                            </button>
-                            {isEditing && (
-                                <button
-                                    type="button"
-                                    onClick={handleCancel}
-                                    disabled={updateProfileMutation.isPending}
-                                    className="cancel-btn"
-                                >
-                                    Cancel
-                                </button>
-                            )}
-                        </div>
-                    )}
-                </form>
-
-                {/* Profile metadata */}
                 {profileExists && (
-                    <div className="profile-metadata">
+                    <Card variant="outlined" padding="md" className="profile-metadata">
                         <div className="metadata-item">
                             <strong>Profile Created:</strong> {new Date(profile.createdAt).toLocaleDateString()}
                         </div>
                         <div className="metadata-item">
                             <strong>Last Updated:</strong> {new Date(profile.updatedAt).toLocaleDateString()}
                         </div>
-                    </div>
+                    </Card>
                 )}
             </div>
         </Layout>
