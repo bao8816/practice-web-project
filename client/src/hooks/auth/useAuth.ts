@@ -58,11 +58,9 @@ export const useRegister = () => {
             return authAPI.register(userData);
         },
         onSuccess: () => {
-            // Navigate to login page after successful registration
             navigate('/login');
         },
         onError: (error: AxiosError<ApiError>) => {
-            // Simple error logging - could be replaced with toast/alert
             console.error('Registration error:', getErrorMessage(error));
         },
     });
@@ -85,7 +83,6 @@ export const useLogout = () => {
     });
 };
 
-// Check if user is authenticated
 export const useAuth = () => {
     const token = localStorage.getItem('authToken');
 
@@ -95,19 +92,15 @@ export const useAuth = () => {
     };
 };
 
-// Get current user (example for future use)
 export const useCurrentUser = () => {
     const { isAuthenticated } = useAuth();
 
     return useQuery({
         queryKey: authKeys.user(),
         queryFn: async () => {
-            // This would be an API call to get current user
-            // For now, just return basic info from token
             const token = localStorage.getItem('authToken');
             if (!token) throw new Error('No token');
 
-            // You can decode JWT here or make API call
             return { token };
         },
         enabled: isAuthenticated,
