@@ -69,7 +69,6 @@ export const useRegister = () => {
 };
 
 export const useLogout = () => {
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -77,11 +76,11 @@ export const useLogout = () => {
             authAPI.logout();
         },
         onSuccess: () => {
-            // Clear all cached data
+            localStorage.removeItem('authToken');
+
             queryClient.clear();
 
-            // Navigate to home
-            navigate('/');
+            window.location.href = '/';
         },
     });
 };
