@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true }: HeaderProps) => {
     const { isAuthenticated } = useAuth();
-    const { data: profile } = useMyProfile();
+    const { data: profile } = useMyProfile(isAuthenticated);
 
     return (
         <header className={`header ${variant === 'compact' ? 'header-compact' : 'header-hero'}`}>

@@ -10,12 +10,13 @@ export const profileKeys = {
     myProfile: () => [...profileKeys.all, 'my-profile'] as const,
 };
 
-export const useMyProfile = () => {
+export const useMyProfile = (enabled = true) => {
     return useQuery({
         queryKey: profileKeys.myProfile(),
         queryFn: async (): Promise<ProfileResponse> => {
             return profilesAPI.getMyProfile();
         },
+        enabled: enabled && !!localStorage.getItem('authToken'),
         retry: (failureCount, error: AxiosError) => {
             // Don't retry if profile doesn't exist (404)
             if (error?.response?.status === 404) {
