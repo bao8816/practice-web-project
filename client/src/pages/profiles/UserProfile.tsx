@@ -20,7 +20,7 @@ export const UserProfile = () => {
     });
 
     if (!userId) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/profiles/me" replace />;
     }
 
     const formatDate = (dateString: string | undefined) => {

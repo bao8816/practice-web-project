@@ -109,7 +109,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ username, avatarUrl }) => {
                     <div className="menu-divider"></div>
 
                     <nav className="menu-items">
-                        <Link to="/profiles/my-profile" className="menu-item" onClick={() => setIsOpen(false)}>
+                        <Link to="/profiles/me" className="menu-item" onClick={() => setIsOpen(false)}>
                             <svg className="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
                                 <path
                                     d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"

@@ -42,6 +42,21 @@ export const useProfile = (userId: number) => {
     });
 };
 
+export const useAllProfiles = () => {
+    return useQuery({
+        queryKey: profileKeys.all,
+        queryFn: async (): Promise<ProfileResponse[]> => {
+            return profilesAPI.getAllProfiles();
+        },
+        retry: (failureCount, error: AxiosError) => {
+            if (error?.response?.status === 404) {
+                return false;
+            }
+            return failureCount < 3;
+        },
+    });
+};
+
 export const useUpdateMyProfile = () => {
     const queryClient = useQueryClient();
 

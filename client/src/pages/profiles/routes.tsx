@@ -7,11 +7,11 @@ export const profileRoutes: RouteObject[] = [
         element: <Outlet />,
         children: [
             {
-                path: 'my-profile',
+                path: 'me',
                 element: <MyProfile />,
             },
             {
-                path: ':userId',
+                path: 'user/:userId',
                 element: <UserProfile />,
             },
         ],
