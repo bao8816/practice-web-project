@@ -1,5 +1,5 @@
 import { RouteObject, Outlet } from 'react-router-dom';
-import { MyProfile, UserProfile } from './index';
+import { MyProfile, MyProfileEdit, UserProfile } from './index';
 
 export const profileRoutes: RouteObject[] = [
     {
@@ -11,7 +11,11 @@ export const profileRoutes: RouteObject[] = [
                 element: <MyProfile />,
             },
             {
-                path: 'user/:userId',
+                path: 'me/edit',
+                element: <MyProfileEdit />,
+            },
+            {
+                path: ':userId',
                 element: <UserProfile />,
             },
         ],
