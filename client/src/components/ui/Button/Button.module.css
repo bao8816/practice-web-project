@@ -14,14 +14,14 @@
     cursor: pointer;
     user-select: none;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(198, 167, 255, 0.3);
+    box-shadow: var(--focus-ring);
 }
 
 .btn:disabled {
@@ -31,17 +31,17 @@
 
 /* Sizes */
 .btn--sm {
-    padding: 0.5rem 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
     font-size: 0.875rem;
 }
 
 .btn--md {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem var(--spacing-lg);
     font-size: 1rem;
 }
 
 .btn--lg {
-    padding: 1rem 2rem;
+    padding: var(--spacing-md) var(--spacing-xl);
     font-size: 1.125rem;
 }
 
@@ -54,12 +54,12 @@
 .btn--primary {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: white;
-    box-shadow: 0 4px 12px rgba(157, 127, 217, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .btn--primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(157, 127, 217, 0.4);
+    box-shadow: var(--shadow-xl);
 }
 
 .btn--primary:active:not(:disabled) {

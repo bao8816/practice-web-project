@@ -29,14 +29,14 @@
 /* Input Base */
 .input {
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem var(--spacing-md);
     font-family: inherit;
     font-size: 1rem;
     line-height: 1.5;
     color: var(--text-color);
     background-color: var(--background-color);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     transition: all 0.3s ease;
     outline: none;
 }
@@ -52,7 +52,7 @@
 
 .input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(198, 167, 255, 0.1);
+    box-shadow: var(--focus-ring);
 }
 
 .input:disabled {
@@ -77,7 +77,7 @@
 
 .input--error:focus {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+    box-shadow: var(--focus-ring-error);
 }
 
 /* Icons */

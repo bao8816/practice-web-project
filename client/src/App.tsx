@@ -1,4 +1,3 @@
-import './App.css';
 import { useRoutes } from 'react-router-dom';
 import { homeRoutes } from './pages/home';
 import { authRoutes } from './pages/auth';
