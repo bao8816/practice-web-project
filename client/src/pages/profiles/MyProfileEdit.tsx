@@ -154,7 +154,7 @@ export const MyProfileEdit = () => {
                 )}
 
                 <Card variant="elevated" padding="lg">
-                    <form onSubmit={handleSubmit} className="profile-form">
+                    <form onSubmit={handleSubmit}>
                         <Field label="Full Name">
                             <Input
                                 type="text"
@@ -224,7 +224,7 @@ export const MyProfileEdit = () => {
                             </Button>
                             <Button
                                 type="button"
-                                variant="secondary"
+                                variant="outline"
                                 onClick={handleCancel}
                                 disabled={updateProfileMutation.isPending}
                             >

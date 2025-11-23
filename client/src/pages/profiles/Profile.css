@@ -84,20 +84,6 @@
     margin-bottom: 1.5rem;
 }
 
-.profile-form {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 2.5rem;
-    position: relative;
-    z-index: 1;
-    box-shadow:
-        0 20px 60px rgba(198, 167, 255, 0.15),
-        0 8px 32px rgba(198, 167, 255, 0.1);
-    animation: slideInUp 0.8s ease-out;
-}
-
 .form-actions {
     display: flex;
     gap: 1rem;

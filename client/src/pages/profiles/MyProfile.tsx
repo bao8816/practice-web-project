@@ -71,59 +71,53 @@ export const MyProfile = () => {
                 </div>
 
                 <Card variant="elevated" padding="lg">
-                    <div className="profile-form">
-                        <Field
-                            label="Full Name"
-                            value={profile?.fullName || 'Not provided'}
-                            empty={!profile?.fullName}
-                        />
+                    <Field label="Full Name" value={profile?.fullName || 'Not provided'} empty={!profile?.fullName} />
 
-                        <Field
-                            label="Gender"
-                            value={
-                                profile?.gender
-                                    ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
-                                    : 'Not provided'
-                            }
-                            empty={!profile?.gender}
-                        />
+                    <Field
+                        label="Gender"
+                        value={
+                            profile?.gender
+                                ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
+                                : 'Not provided'
+                        }
+                        empty={!profile?.gender}
+                    />
 
-                        <Field
-                            label="Date of Birth"
-                            value={formatDate(profile?.dateOfBirth) || 'Not provided'}
-                            empty={!profile?.dateOfBirth}
-                        />
+                    <Field
+                        label="Date of Birth"
+                        value={formatDate(profile?.dateOfBirth) || 'Not provided'}
+                        empty={!profile?.dateOfBirth}
+                    />
 
-                        <Field
-                            label="Phone Number"
-                            value={profile?.phoneNumber || 'Not provided'}
-                            empty={!profile?.phoneNumber}
-                        />
+                    <Field
+                        label="Phone Number"
+                        value={profile?.phoneNumber || 'Not provided'}
+                        empty={!profile?.phoneNumber}
+                    />
 
-                        <Field
-                            label="Avatar URL"
-                            value={
-                                profile?.avatarUrl ? (
-                                    <div className="avatar-display">
-                                        <img
-                                            src={profile.avatarUrl}
-                                            alt="Avatar"
-                                            className="avatar-preview"
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).style.display = 'none';
-                                            }}
-                                        />
-                                        <span className="avatar-url">
-                                            <a href={`${profile.avatarUrl}`}>Avatar URL</a>
-                                        </span>
-                                    </div>
-                                ) : (
-                                    'Not provided'
-                                )
-                            }
-                            empty={!profile?.avatarUrl}
-                        />
-                    </div>
+                    <Field
+                        label="Avatar URL"
+                        value={
+                            profile?.avatarUrl ? (
+                                <div className="avatar-display">
+                                    <img
+                                        src={profile.avatarUrl}
+                                        alt="Avatar"
+                                        className="avatar-preview"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).style.display = 'none';
+                                        }}
+                                    />
+                                    <span className="avatar-url">
+                                        <a href={`${profile.avatarUrl}`}>Avatar URL</a>
+                                    </span>
+                                </div>
+                            ) : (
+                                'Not provided'
+                            )
+                        }
+                        empty={!profile?.avatarUrl}
+                    />
                 </Card>
 
                 {profile && (
