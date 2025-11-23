@@ -18,7 +18,6 @@ export const useMyProfile = (enabled = true) => {
         },
         enabled: enabled && !!localStorage.getItem('authToken'),
         retry: (failureCount, error: AxiosError) => {
-            // Don't retry if profile doesn't exist (404)
             if (error?.response?.status === 404) {
                 return false;
             }
@@ -27,7 +26,6 @@ export const useMyProfile = (enabled = true) => {
     });
 };
 
-// Hook to get specific user's profile
 export const useProfile = (userId: number) => {
     return useQuery({
         queryKey: profileKeys.profile(userId),
@@ -36,7 +34,6 @@ export const useProfile = (userId: number) => {
         },
         enabled: !!userId,
         retry: (failureCount, error: AxiosError) => {
-            // Don't retry if profile doesn't exist (404)
             if (error?.response?.status === 404) {
                 return false;
             }
@@ -45,7 +42,6 @@ export const useProfile = (userId: number) => {
     });
 };
 
-// Hook to update current user's profile
 export const useUpdateMyProfile = () => {
     const queryClient = useQueryClient();
 
@@ -54,9 +50,7 @@ export const useUpdateMyProfile = () => {
             return profilesAPI.updateMyProfile(data);
         },
         onSuccess: (data) => {
-            // Update the cached profile data
             queryClient.setQueryData(profileKeys.myProfile(), data);
-            // Also invalidate to refetch if needed
             queryClient.invalidateQueries({ queryKey: profileKeys.myProfile() });
         },
         onError: (error: AxiosError) => {
@@ -65,7 +59,6 @@ export const useUpdateMyProfile = () => {
     });
 };
 
-// Hook to update specific user's profile
 export const useUpdateProfile = () => {
     const queryClient = useQueryClient();
 
@@ -80,7 +73,6 @@ export const useUpdateProfile = () => {
             return profilesAPI.updateProfile(userId, data);
         },
         onSuccess: (data) => {
-            // Invalidate and refetch profile data
             queryClient.invalidateQueries({ queryKey: profileKeys.profile(data.userId) });
         },
         onError: (error: AxiosError) => {
@@ -89,7 +81,6 @@ export const useUpdateProfile = () => {
     });
 };
 
-// Hook to create profile for specific user (admin only)
 export const useCreateProfile = () => {
     const queryClient = useQueryClient();
 
@@ -104,7 +95,6 @@ export const useCreateProfile = () => {
             return profilesAPI.createProfile(userId, data);
         },
         onSuccess: (data) => {
-            // Invalidate and refetch profile data
             queryClient.invalidateQueries({ queryKey: profileKeys.profile(data.userId) });
         },
         onError: (error: AxiosError) => {
@@ -113,7 +103,6 @@ export const useCreateProfile = () => {
     });
 };
 
-// Hook to delete profile
 export const useDeleteProfile = () => {
     const queryClient = useQueryClient();
 
@@ -122,7 +111,6 @@ export const useDeleteProfile = () => {
             return profilesAPI.deleteProfile(userId);
         },
         onSuccess: (_data, userId) => {
-            // Remove the profile from cache
             queryClient.removeQueries({ queryKey: profileKeys.profile(userId) });
         },
         onError: (error: AxiosError) => {

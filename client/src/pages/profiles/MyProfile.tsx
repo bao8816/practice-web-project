@@ -8,7 +8,7 @@ import { Gender, type UpdateProfileRequest } from '../../types/profile';
 import type { AxiosError } from 'axios';
 import './Profile.css';
 
-export const Profile = () => {
+export const MyProfile = () => {
     const { data: profile, isLoading, error, isError } = useMyProfile();
     const updateProfileMutation = useUpdateMyProfile();
 

@@ -1,16 +1,19 @@
-import { RouteObject } from 'react-router-dom';
-import { Profile } from './index';
+import { RouteObject, Outlet } from 'react-router-dom';
+import { MyProfile, UserProfile } from './index';
 
 export const profileRoutes: RouteObject[] = [
     {
-        path: '/profile',
-        element: <Profile />,
+        path: '/profiles',
+        element: <Outlet />,
         children: [
-            // Nested routes sẽ được define ở đây
-            // { path: '', element: <ProfileOverview /> },           // /profile (default)
-            // { path: 'edit', element: <ProfileEdit /> },           // /profile/edit
-            // { path: 'settings', element: <ProfileSettings /> },   // /profile/settings
-            // { path: 'addresses', element: <ProfileAddresses /> }, // /profile/addresses
+            {
+                path: 'my-profile',
+                element: <MyProfile />,
+            },
+            {
+                path: ':userId',
+                element: <UserProfile />,
+            },
         ],
     },
 ];
