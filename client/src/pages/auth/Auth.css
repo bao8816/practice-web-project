@@ -24,9 +24,9 @@
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(circle at 20% 20%, rgba(0, 119, 190, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(32, 178, 170, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 60% 40%, rgba(0, 168, 204, 0.06) 0%, transparent 40%);
+        radial-gradient(circle at 20% 20%, rgba(198, 167, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(247, 163, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 60% 40%, rgba(125, 200, 255, 0.06) 0%, transparent 40%);
     pointer-events: none;
     z-index: 0;
 }
@@ -40,8 +40,8 @@
     width: 100%;
     max-width: 640px; /* Increased from 420px */
     box-shadow:
-        0 20px 60px rgba(0, 119, 190, 0.15),
-        0 8px 32px rgba(0, 119, 190, 0.1);
+        0 20px 60px rgba(198, 167, 255, 0.15),
+        0 8px 32px rgba(198, 167, 255, 0.1);
     position: relative;
     z-index: 1;
     animation: slideInUp 0.8s ease-out;
@@ -130,8 +130,8 @@
     border-color: var(--primary-color);
     background: rgba(255, 255, 255, 1);
     box-shadow:
-        0 0 0 4px rgba(0, 119, 190, 0.1),
-        0 4px 12px rgba(0, 119, 190, 0.15);
+        0 0 0 4px rgba(198, 167, 255, 0.1),
+        0 4px 12px rgba(198, 167, 255, 0.15);
     transform: translateY(-1px);
 }
 
@@ -180,8 +180,8 @@
 .auth-button:hover {
     transform: translateY(-2px);
     box-shadow:
-        0 8px 25px rgba(0, 119, 190, 0.4),
-        0 4px 12px rgba(0, 119, 190, 0.2);
+        0 8px 25px rgba(198, 167, 255, 0.4),
+        0 4px 12px rgba(198, 167, 255, 0.2);
 }
 
 .auth-button:active {

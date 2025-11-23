@@ -1,4 +1,7 @@
 /* Profile Page Styles - Ocean Breeze Theme */
+@import '../../styles/shared/animations.css';
+@import '../../styles/shared/avatars.css';
+
 .profile-container {
     min-height: calc(100vh - 100px);
     width: 100%;
@@ -23,9 +26,9 @@
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(circle at 20% 20%, rgba(0, 119, 190, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(32, 178, 170, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 60% 40%, rgba(0, 168, 204, 0.06) 0%, transparent 40%);
+        radial-gradient(circle at 20% 20%, rgba(198, 167, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(247, 163, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 60% 40%, rgba(125, 200, 255, 0.06) 0%, transparent 40%);
     pointer-events: none;
     z-index: 0;
     border-radius: 24px;
@@ -45,35 +48,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 119, 190, 0.1);
-}
-
-.edit-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
-    border: none !important;
-    border-radius: 12px;
-    color: white !important;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3);
-}
-
-.edit-btn:hover {
-    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color)) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 119, 190, 0.4);
-    color: white !important;
-}
-
-.edit-btn:focus {
-    outline: none;
-    box-shadow:
-        0 0 0 3px rgba(0, 119, 190, 0.3),
-        0 6px 20px rgba(0, 119, 190, 0.4);
-    color: white !important;
+    text-shadow: 0 2px 4px rgba(198, 167, 255, 0.1);
 }
 
 .profile-loading {
@@ -95,7 +70,7 @@
     text-align: center;
     position: relative;
     z-index: 1;
-    box-shadow: 0 8px 32px rgba(0, 119, 190, 0.1);
+    box-shadow: 0 8px 32px rgba(198, 167, 255, 0.1);
 }
 
 .profile-not-found h2 {
@@ -106,6 +81,7 @@
 .profile-not-found p {
     color: var(--text-color);
     margin: 0;
+    margin-bottom: 1.5rem;
 }
 
 .profile-form {
@@ -117,101 +93,9 @@
     position: relative;
     z-index: 1;
     box-shadow:
-        0 20px 60px rgba(0, 119, 190, 0.15),
-        0 8px 32px rgba(0, 119, 190, 0.1);
+        0 20px 60px rgba(198, 167, 255, 0.15),
+        0 8px 32px rgba(198, 167, 255, 0.1);
     animation: slideInUp 0.8s ease-out;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 1rem;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--text-color);
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
-    transform: translateY(-1px);
-}
-
-.form-display {
-    padding: 1rem;
-    background: rgba(248, 250, 252, 0.8);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-color);
-    font-size: 1rem;
-    min-height: 1.2rem;
-}
-
-.form-display.empty {
-    font-style: italic;
-    color: var(--text-muted);
-    opacity: 0.7;
-}
-
-.avatar-display {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    text-align: center;
-}
-
-.avatar-preview {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0, 119, 190, 0.2);
-}
-
-.avatar-url {
-    color: var(--primary-color);
-    text-decoration: none;
-    word-break: break-all;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.avatar-url a {
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--primary-color);
-    border-radius: 8px;
-    background: rgba(0, 119, 190, 0.05);
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.avatar-url a:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3);
 }
 
 .form-actions {
@@ -219,46 +103,6 @@
     gap: 1rem;
     margin-top: 2rem;
     justify-content: flex-end;
-}
-
-.submit-btn,
-.cancel-btn {
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 120px;
-}
-
-.submit-btn {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3);
-}
-
-.submit-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 119, 190, 0.4);
-}
-
-.submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.cancel-btn {
-    background: rgba(156, 163, 175, 0.1);
-    color: var(--text-color);
-    border: 2px solid var(--border-color);
-}
-
-.cancel-btn:hover:not(:disabled) {
-    background: rgba(156, 163, 175, 0.2);
-    transform: translateY(-1px);
 }
 
 .profile-metadata {
@@ -269,32 +113,6 @@
     border-radius: 16px;
     position: relative;
     z-index: 1;
-}
-
-.metadata-item {
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-    font-size: 0.9rem;
-}
-
-.metadata-item:last-child {
-    margin-bottom: 0;
-}
-
-.metadata-item strong {
-    color: var(--primary-color);
-}
-
-/* Animations */
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* Responsive Design */
@@ -320,15 +138,5 @@
 
     .form-actions {
         flex-direction: column;
-    }
-
-    .submit-btn,
-    .cancel-btn {
-        width: 100%;
-    }
-
-    .avatar-display {
-        flex-direction: column;
-        align-items: flex-start;
     }
 }

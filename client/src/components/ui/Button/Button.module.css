@@ -21,7 +21,7 @@
 
 .btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.3);
+    box-shadow: 0 0 0 3px rgba(198, 167, 255, 0.3);
 }
 
 .btn:disabled {
@@ -54,12 +54,12 @@
 .btn--primary {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 119, 190, 0.3);
+    box-shadow: 0 4px 12px rgba(198, 167, 255, 0.3);
 }
 
 .btn--primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 119, 190, 0.4);
+    box-shadow: 0 6px 20px rgba(198, 167, 255, 0.4);
 }
 
 .btn--primary:active:not(:disabled) {
@@ -69,12 +69,12 @@
 .btn--secondary {
     background: linear-gradient(135deg, var(--secondary-color), var(--reef-color));
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 168, 204, 0.3);
+    box-shadow: 0 4px 12px rgba(125, 200, 255, 0.3);
 }
 
 .btn--secondary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 168, 204, 0.4);
+    box-shadow: 0 6px 20px rgba(125, 200, 255, 0.4);
 }
 
 .btn--danger {
@@ -107,7 +107,7 @@
 }
 
 .btn--ghost:hover:not(:disabled) {
-    background: rgba(0, 119, 190, 0.1);
+    background: rgba(198, 167, 255, 0.1);
     color: var(--primary-color);
 }
 

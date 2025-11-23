@@ -1,15 +1,15 @@
 export const DEFAULT_IMAGES = {
     AVATARS: {
         // UI Avatars - generates avatar from initials
-        PLACEHOLDER: (name: string, background = '0D8ABC', color = 'fff') =>
+        PLACEHOLDER: (name: string, background = 'C6A7FF', color = 'fff') =>
             `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${background}&color=${color}&size=200`,
 
         // Default avatar for users without names
-        ANONYMOUS: 'https://ui-avatars.com/api/?name=User&background=6B7280&color=fff&size=200',
+        ANONYMOUS: 'https://ui-avatars.com/api/?name=User&background=C6A7FF&color=fff&size=200',
 
         // Gender-specific defaults
-        MALE: 'https://ui-avatars.com/api/?name=M&background=3B82F6&color=fff&size=200',
-        FEMALE: 'https://ui-avatars.com/api/?name=F&background=EC4899&color=fff&size=200',
+        MALE: 'https://ui-avatars.com/api/?name=M&background=7DC8FF&color=fff&size=200',
+        FEMALE: 'https://ui-avatars.com/api/?name=F&background=F7A3D4&color=fff&size=200',
     },
 
     PRODUCTS: {

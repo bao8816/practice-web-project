@@ -3,24 +3,25 @@
     line-height: 1.5;
     font-weight: 400;
 
-    /* Ocean Breeze color scheme - Light theme */
-    --primary-color: #0077be; /* Ocean blue */
-    --primary-dark: #005a8b; /* Deep ocean blue */
-    --secondary-color: #00a8cc; /* Sky blue */
-    --accent-color: #ff6b6b; /* Coral accent */
-    --text-color: #2c3e50; /* Deep navy text */
-    --text-light: #6c7b7f; /* Muted blue-gray */
-    --background-color: #ffffff; /* Pure white */
-    --background-light: #f0f8ff; /* Alice blue */
-    --border-color: #b8d4e3; /* Light blue border */
-    --shadow-color: rgba(0, 119, 190, 0.15); /* Ocean blue shadow */
+    /* Pastel Dream color scheme - Light theme */
+    --primary-color: #9d7fd9; /* Soft purple - darkened for better contrast */
+    --primary-dark: #7a5cb8; /* Deep purple */
+    --secondary-color: #4db8ff; /* Sky blue - more saturated */
+    --accent-color: #f178c1; /* Pink accent - more saturated */
+    --text-color: #2d1f3d; /* Deep purple text - much darker */
+    --text-light: #6b5f7e; /* Muted purple-gray - darker */
+    --text-muted: #9488a3; /* Even lighter muted text */
+    --background-color: #fdf9ff; /* Off white with purple tint */
+    --background-light: #f9f4ff; /* Light lavender */
+    --border-color: #d4c2e8; /* Light purple border - more saturated */
+    --shadow-color: rgba(157, 127, 217, 0.15); /* Purple shadow */
 
-    /* Additional Ocean Breeze colors */
-    --ocean-light: #e6f3ff; /* Very light ocean */
-    --ocean-medium: #4da6d9; /* Medium ocean */
-    --wave-color: #87ceeb; /* Sky blue wave */
-    --foam-color: #f0f8ff; /* Sea foam */
-    --reef-color: #20b2aa; /* Light sea green */
+    /* Additional Pastel colors */
+    --ocean-light: #f5f0ff; /* Very light purple */
+    --ocean-medium: #a88fff; /* Medium purple */
+    --wave-color: #b8e0ff; /* Light sky blue */
+    --foam-color: #fdf9ff; /* Softest background */
+    --reef-color: #ffc4e8; /* Light pink */
 
     color-scheme: light;
     color: var(--text-color);
@@ -136,7 +137,7 @@ textarea:focus,
 select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+    box-shadow: 0 0 0 3px rgba(198, 167, 255, 0.1);
 }
 
 /* Utility classes */

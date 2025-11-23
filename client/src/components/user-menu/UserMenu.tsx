@@ -47,6 +47,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ username, avatarUrl }) => {
     return (
         <div className="user-menu" ref={menuRef}>
             <button
+                type="button"
                 className="user-menu-trigger"
                 onClick={toggleMenu}
                 aria-expanded={isOpen}
