@@ -1,16 +1,17 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
+import { Button } from '../../components/ui';
 
 export const HomeBody = () => {
     const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <main className="home-main">
             <div className="home-content">
                 <p className="home-description">
-                    Discover thousands of products at unbeatable prices. From electronics to
-                    fashion, home goods to beauty products - we have everything you need with fast
-                    shipping and secure checkout.
+                    Discover thousands of products at unbeatable prices. From electronics to fashion, home goods to
+                    beauty products - we have everything you need with fast shipping and secure checkout.
                 </p>
 
                 <div className="home-features">
@@ -54,17 +55,17 @@ export const HomeBody = () => {
                 <div className="auth-cta-section">
                     <h3 className="cta-title">Ready to Start Shopping?</h3>
                     <p className="cta-description">
-                        Join thousands of happy customers and get access to exclusive deals,
-                        personalized recommendations, and faster checkout.
+                        Join thousands of happy customers and get access to exclusive deals, personalized
+                        recommendations, and faster checkout.
                     </p>
                     {isAuthenticated ? null : (
                         <div className="cta-buttons">
-                            <Link to="/register" className="cta-btn primary">
+                            <Button variant="primary" size="lg" onClick={() => navigate('/register')}>
                                 Create Free Account
-                            </Link>
-                            <Link to="/login" className="cta-btn secondary">
+                            </Button>
+                            <Button variant="outline" size="lg" onClick={() => navigate('/login')}>
                                 Already have an account? Sign In
-                            </Link>
+                            </Button>
                         </div>
                     )}
                 </div>

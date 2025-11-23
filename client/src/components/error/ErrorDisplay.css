@@ -19,8 +19,8 @@
 }
 
 .error-display.auth {
-    border-left-color: #6f42c1;
-    background: #f8f6ff;
+    border-left-color: var(--primary-color);
+    background: var(--background-light);
 }
 
 .error-display.validation {
@@ -29,8 +29,8 @@
 }
 
 .error-display.unknown {
-    border-left-color: #6c757d;
-    background: #f8f9fa;
+    border-left-color: var(--text-light);
+    background: var(--background-light);
 }
 
 .error-header {
@@ -52,7 +52,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: #212529;
+    color: var(--text-color);
 }
 
 .error-icon {
@@ -77,7 +77,7 @@
 
 .error-field-label {
     font-weight: 600;
-    color: #343a40;
+    color: var(--text-color);
     font-size: 13px;
     text-transform: capitalize;
     text-align: left;
@@ -86,7 +86,7 @@
 
 .error-field-value {
     font-size: 14px;
-    color: #495057;
+    color: var(--text-color);
     background: rgba(0, 0, 0, 0.05);
     padding: 8px 12px;
     border-radius: 4px;
@@ -123,7 +123,7 @@
 
 .error-field-value .error-message-list li::before {
     content: '•';
-    color: #dc3545;
+    color: var(--accent-color);
     font-weight: bold;
     position: absolute;
     left: 0;
@@ -150,50 +150,50 @@
 }
 
 .error-retry-btn {
-    background: #007bff;
+    background: var(--primary-color);
     color: white;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 2px 4px rgba(157, 127, 217, 0.2);
 }
 
 .error-retry-btn:hover {
-    background: #0056b3;
+    background: var(--primary-dark);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(157, 127, 217, 0.3);
 }
 
 .error-dismiss-btn {
-    background: #6c757d;
+    background: var(--text-light);
     color: white;
-    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+    box-shadow: 0 2px 4px rgba(107, 95, 126, 0.2);
 }
 
 .error-dismiss-btn:hover {
-    background: #545b62;
+    background: var(--text-color);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    box-shadow: 0 4px 8px rgba(107, 95, 126, 0.3);
 }
 
 .error-details {
     margin-top: 16px;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--border-color);
     padding-top: 12px;
 }
 
 .error-details summary {
     cursor: pointer;
     font-size: 12px;
-    color: #6c757d;
+    color: var(--text-light);
     font-weight: 500;
     margin-bottom: 8px;
 }
 
 .error-details pre {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 12px;
     font-size: 11px;
-    color: #495057;
+    color: var(--text-color);
     overflow-x: auto;
     max-height: 200px;
     overflow-y: auto;

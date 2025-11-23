@@ -1,4 +1,4 @@
-/* Header Component Styles - Ocean Breeze Theme */
+/* Header Component Styles - Pastel Dream Theme */
 
 /* Base Header Styles */
 .header {
@@ -76,12 +76,7 @@
 .header-title {
     margin: 0;
     font-weight: 700;
-    background: linear-gradient(
-        135deg,
-        var(--primary-color),
-        var(--ocean-medium),
-        var(--secondary-color)
-    );
+    background: linear-gradient(135deg, var(--primary-color), var(--ocean-medium), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
