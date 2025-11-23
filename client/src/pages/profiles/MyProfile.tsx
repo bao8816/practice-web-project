@@ -200,7 +200,9 @@ export const MyProfile = () => {
                         ) : (
                             <div className="form-group">
                                 <label>Full Name</label>
-                                <div className="form-display">{profile?.fullName || 'Not provided'}</div>
+                                <div className={`form-display ${!profile?.fullName ? 'empty' : ''}`}>
+                                    {profile?.fullName || 'Not provided'}
+                                </div>
                             </div>
                         )}
 
@@ -221,7 +223,7 @@ export const MyProfile = () => {
                         ) : (
                             <div className="form-group">
                                 <label>Gender</label>
-                                <div className="form-display">
+                                <div className={`form-display ${!profile?.gender ? 'empty' : ''}`}>
                                     {profile?.gender
                                         ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
                                         : 'Not provided'}
@@ -241,7 +243,9 @@ export const MyProfile = () => {
                         ) : (
                             <div className="form-group">
                                 <label>Date of Birth</label>
-                                <div className="form-display">{formatDate(profile?.dateOfBirth) || 'Not provided'}</div>
+                                <div className={`form-display ${!profile?.dateOfBirth ? 'empty' : ''}`}>
+                                    {formatDate(profile?.dateOfBirth) || 'Not provided'}
+                                </div>
                             </div>
                         )}
 
@@ -258,7 +262,9 @@ export const MyProfile = () => {
                         ) : (
                             <div className="form-group">
                                 <label>Phone Number</label>
-                                <div className="form-display">{profile?.phoneNumber || 'Not provided'}</div>
+                                <div className={`form-display ${!profile?.phoneNumber ? 'empty' : ''}`}>
+                                    {profile?.phoneNumber || 'Not provided'}
+                                </div>
                             </div>
                         )}
 
@@ -275,7 +281,7 @@ export const MyProfile = () => {
                         ) : (
                             <div className="form-group">
                                 <label>Avatar URL</label>
-                                <div className="form-display">
+                                <div className={`form-display ${!profile?.avatarUrl ? 'empty' : ''}`}>
                                     {profile?.avatarUrl ? (
                                         <div className="avatar-display">
                                             <img

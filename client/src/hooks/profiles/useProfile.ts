@@ -6,8 +6,8 @@ import { getErrorMessage } from '../../types/errors';
 
 export const profileKeys = {
     all: ['profiles'] as const,
-    profile: (userId: number) => [...profileKeys.all, 'profile', userId] as const,
-    myProfile: () => [...profileKeys.all, 'my-profile'] as const,
+    profile: (userId: number) => [...profileKeys.all, 'user-profile', userId] as const,
+    myProfile: () => [...profileKeys.all, 'me'] as const,
 };
 
 export const useMyProfile = (enabled = true) => {
