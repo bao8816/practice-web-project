@@ -224,7 +224,7 @@ export const MyProfileEdit = () => {
                             </Button>
                             <Button
                                 type="button"
-                                variant="outline"
+                                variant="secondary"
                                 onClick={handleCancel}
                                 disabled={updateProfileMutation.isPending}
                             >

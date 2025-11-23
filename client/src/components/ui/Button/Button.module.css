@@ -52,14 +52,14 @@
 
 /* Variants */
 .btn--primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: white;
-    box-shadow: 0 4px 12px rgba(198, 167, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(157, 127, 217, 0.3);
 }
 
 .btn--primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(198, 167, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(157, 127, 217, 0.4);
 }
 
 .btn--primary:active:not(:disabled) {
