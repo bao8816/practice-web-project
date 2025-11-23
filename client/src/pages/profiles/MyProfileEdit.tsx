@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
-import { Button, Input, Select, Card } from '../../components/ui';
+import { Button, Input, Select, Card, Field } from '../../components/ui';
 import { useMyProfile, useUpdateMyProfile } from '../../hooks/profiles';
 import { useApiError } from '../../hooks/error';
 import { Gender, type UpdateProfileRequest } from '../../types/profile';
@@ -155,58 +155,63 @@ export const MyProfileEdit = () => {
 
                 <Card variant="elevated" padding="lg">
                     <form onSubmit={handleSubmit} className="profile-form">
-                        <Input
-                            label="Full Name"
-                            type="text"
-                            id="fullName"
-                            name="fullName"
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            placeholder="Enter your full name"
-                        />
+                        <Field label="Full Name">
+                            <Input
+                                type="text"
+                                id="fullName"
+                                name="fullName"
+                                value={formData.fullName}
+                                onChange={handleChange}
+                                placeholder="Enter your full name"
+                            />
+                        </Field>
 
-                        <Select
-                            label="Gender"
-                            id="gender"
-                            name="gender"
-                            value={formData.gender || ''}
-                            onChange={handleChange}
-                            options={[
-                                { value: '', label: 'Select gender' },
-                                { value: Gender.MALE, label: 'Male' },
-                                { value: Gender.FEMALE, label: 'Female' },
-                                { value: Gender.OTHER, label: 'Other' },
-                            ]}
-                        />
+                        <Field label="Gender">
+                            <Select
+                                id="gender"
+                                name="gender"
+                                value={formData.gender || ''}
+                                onChange={handleChange}
+                                options={[
+                                    { value: '', label: 'Select gender' },
+                                    { value: Gender.MALE, label: 'Male' },
+                                    { value: Gender.FEMALE, label: 'Female' },
+                                    { value: Gender.OTHER, label: 'Other' },
+                                ]}
+                            />
+                        </Field>
 
-                        <Input
-                            label="Date of Birth"
-                            type="date"
-                            id="dateOfBirth"
-                            name="dateOfBirth"
-                            value={formatDateForInput(formData.dateOfBirth)}
-                            onChange={handleChange}
-                        />
+                        <Field label="Date of Birth">
+                            <Input
+                                type="date"
+                                id="dateOfBirth"
+                                name="dateOfBirth"
+                                value={formatDateForInput(formData.dateOfBirth)}
+                                onChange={handleChange}
+                            />
+                        </Field>
 
-                        <Input
-                            label="Phone Number"
-                            type="tel"
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            placeholder="Enter your phone number"
-                        />
+                        <Field label="Phone Number">
+                            <Input
+                                type="tel"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                value={formData.phoneNumber}
+                                onChange={handleChange}
+                                placeholder="Enter your phone number"
+                            />
+                        </Field>
 
-                        <Input
-                            label="Avatar URL"
-                            type="url"
-                            id="avatarUrl"
-                            name="avatarUrl"
-                            value={formData.avatarUrl}
-                            onChange={handleChange}
-                            placeholder="https://example.com/avatar.jpg"
-                        />
+                        <Field label="Avatar URL">
+                            <Input
+                                type="url"
+                                id="avatarUrl"
+                                name="avatarUrl"
+                                value={formData.avatarUrl}
+                                onChange={handleChange}
+                                placeholder="https://example.com/avatar.jpg"
+                            />
+                        </Field>
 
                         <div className="form-actions">
                             <Button

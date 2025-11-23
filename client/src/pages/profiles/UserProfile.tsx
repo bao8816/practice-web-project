@@ -1,7 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { Layout } from '../../components/layout';
 import { ErrorDisplay } from '../../components/error';
-import { Card } from '../../components/ui';
+import { Card, Field } from '../../components/ui';
 import { useProfile } from '../../hooks/profiles';
 import { useApiError } from '../../hooks/error';
 import './Profile.css';
@@ -55,40 +55,34 @@ export const UserProfile = () => {
 
                 <Card variant="elevated" padding="lg">
                     <div className="profile-form">
-                        <div className="form-group">
-                            <label>Full Name</label>
-                            <div className={`form-display ${!profile.fullName ? 'empty' : ''}`}>
-                                {profile.fullName || 'Not provided'}
-                            </div>
-                        </div>
+                        <Field label="Full Name" value={profile.fullName || 'Not provided'} empty={!profile.fullName} />
 
-                        <div className="form-group">
-                            <label>Gender</label>
-                            <div className={`form-display ${!profile.gender ? 'empty' : ''}`}>
-                                {profile.gender
+                        <Field
+                            label="Gender"
+                            value={
+                                profile.gender
                                     ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
-                                    : 'Not provided'}
-                            </div>
-                        </div>
+                                    : 'Not provided'
+                            }
+                            empty={!profile.gender}
+                        />
 
-                        <div className="form-group">
-                            <label>Date of Birth</label>
-                            <div className={`form-display ${!profile.dateOfBirth ? 'empty' : ''}`}>
-                                {formatDate(profile.dateOfBirth) || 'Not provided'}
-                            </div>
-                        </div>
+                        <Field
+                            label="Date of Birth"
+                            value={formatDate(profile.dateOfBirth) || 'Not provided'}
+                            empty={!profile.dateOfBirth}
+                        />
 
-                        <div className="form-group">
-                            <label>Phone Number</label>
-                            <div className={`form-display ${!profile.phoneNumber ? 'empty' : ''}`}>
-                                {profile.phoneNumber || 'Not provided'}
-                            </div>
-                        </div>
+                        <Field
+                            label="Phone Number"
+                            value={profile.phoneNumber || 'Not provided'}
+                            empty={!profile.phoneNumber}
+                        />
 
-                        <div className="form-group">
-                            <label>Avatar</label>
-                            <div className={`form-display ${!profile.avatarUrl ? 'empty' : ''}`}>
-                                {profile.avatarUrl ? (
+                        <Field
+                            label="Avatar"
+                            value={
+                                profile.avatarUrl ? (
                                     <div className="avatar-display">
                                         <img
                                             src={profile.avatarUrl}
@@ -101,9 +95,10 @@ export const UserProfile = () => {
                                     </div>
                                 ) : (
                                     'Not provided'
-                                )}
-                            </div>
-                        </div>
+                                )
+                            }
+                            empty={!profile.avatarUrl}
+                        />
                     </div>
                 </Card>
 
