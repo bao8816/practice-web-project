@@ -1,4 +1,4 @@
-import { Layout } from '../../components/layout/Layout';
+import { Layout } from '../../components/layout';
 import { HomeBody } from './HomeBody';
 import './Home.css';
 

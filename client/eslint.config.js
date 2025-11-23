@@ -3,10 +3,10 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
-    { ignores: ['dist'] },
+    { ignores: ['dist', 'node_modules', 'build', 'coverage', '.vite'] },
     {
         extends: [js.configs.recommended, ...tseslint.configs.recommended],
         files: ['**/*.{js,ts,tsx}'],
@@ -23,5 +23,5 @@ export default tseslint.config(
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         },
     },
-    eslintPluginPrettierRecommended,
+    prettierConfig
 );

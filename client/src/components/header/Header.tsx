@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useAuth, useLogout } from '../../hooks/auth';
+import { useAuth } from '../../hooks/auth';
+import { useMyProfile } from '../../hooks/profiles';
+import { UserMenu } from '../user-menu';
 import './Header.css';
 
 interface HeaderProps {
@@ -10,11 +12,7 @@ interface HeaderProps {
 
 export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true }: HeaderProps) => {
     const { isAuthenticated } = useAuth();
-    const logoutMutation = useLogout();
-
-    const handleLogout = () => {
-        logoutMutation.mutate();
-    };
+    const { data: profile } = useMyProfile(isAuthenticated);
 
     return (
         <header className={`header ${variant === 'compact' ? 'header-compact' : 'header-hero'}`}>
@@ -48,16 +46,7 @@ export const Header = ({ variant = 'hero', showTitle = true, showSubtitle = true
 
                 <div className="header-auth">
                     {isAuthenticated ? (
-                        <>
-                            <span className="welcome-text">Welcome back!</span>
-                            <button
-                                onClick={handleLogout}
-                                className="auth-btn logout-btn"
-                                disabled={logoutMutation.isPending}
-                            >
-                                {logoutMutation.isPending ? 'Signing out...' : 'Sign Out'}
-                            </button>
-                        </>
+                        <UserMenu username={profile?.fullName || 'User'} avatarUrl={profile?.avatarUrl} />
                     ) : (
                         <>
                             <Link to="/login" className="auth-btn login-btn">
