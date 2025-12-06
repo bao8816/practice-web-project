@@ -1,17 +1,33 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Layout } from '../../components/layout/Layout';
+import { Link, Navigate } from 'react-router-dom';
+import { Layout } from '../../components/layout';
+import { ErrorDisplay } from '../../components/error';
+import { Button, Input, Card } from '../../components/ui';
 import './Auth.css';
-import { useLogin } from '../../hooks/auth';
-import type { AxiosError } from 'axios';
+import { useAuth, useLogin } from '../../hooks/auth';
+import { useApiError } from '../../hooks/error';
 
 export const Login = () => {
+    const { isAuthenticated } = useAuth();
+
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
 
     const loginMutation = useLogin();
+
+    const apiError = useApiError({
+        error: loginMutation.error,
+        fallbackMessage: 'Login failed. Please try again.',
+        path: '/auth/login',
+        method: 'POST',
+        errorType: 'LoginError',
+    });
+
+    if (isAuthenticated) {
+        return <Navigate to="/" replace />;
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -25,111 +41,59 @@ export const Login = () => {
         }
     };
 
-    const validateForm = (): string[] => {
-        const newErrors: string[] = [];
-
-        if (!formData.username.trim()) {
-            newErrors.push('Username is required');
-        }
-
-        if (!formData.password) {
-            newErrors.push('Password is required');
-        }
-
-        return newErrors;
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const validationErrors = validateForm();
-        if (validationErrors.length > 0) {
-            // For validation errors, we still use local state
-            // But for API errors, we use React Query's error handling
-            return;
-        }
-
         loginMutation.mutate(formData);
     };
-
-    const getErrorMessage = () => {
-        if (!loginMutation.error) return null;
-
-        const error = loginMutation.error as AxiosError<{ message?: string }>;
-        if (error.response?.data?.message) {
-            return error.response.data.message;
-        }
-        if (error.message) {
-            return error.message;
-        }
-        return 'Login failed. Please try again.';
-    };
-
-    const validationErrors = validateForm();
-    const hasValidationErrors = formData.username !== '' || formData.password !== '' ? validationErrors : [];
 
     return (
         <Layout headerVariant="compact">
             <div className="auth-container">
-                <div className="auth-card">
+                <Card variant="gradient-border" padding="lg" className="auth-card">
                     <div className="auth-header">
                         <h2 className="auth-title">Welcome Back</h2>
                         <p className="auth-subtitle">Sign in to your account</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">
-                        {(hasValidationErrors.length > 0 || loginMutation.error) && (
-                            <div className="auth-errors">
-                                {hasValidationErrors.map((error, index) => (
-                                    <p key={index} className="error-message">
-                                        {error}
-                                    </p>
-                                ))}
-                                {loginMutation.error && <p className="error-message">{getErrorMessage()}</p>}
-                            </div>
+                        {apiError && (
+                            <ErrorDisplay
+                                error={apiError}
+                                onDismiss={() => loginMutation.reset()}
+                                onRetry={() => loginMutation.mutate(formData)}
+                                compact
+                            />
                         )}
 
-                        <div className="form-group">
-                            <label htmlFor="username" className="form-label">
-                                Username
-                            </label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter your username"
-                                autoComplete="username"
-                                disabled={loginMutation.isPending}
-                            />
-                        </div>
+                        <Input
+                            label="Username"
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder="Enter your username"
+                            autoComplete="username"
+                            disabled={loginMutation.isPending}
+                            required
+                        />
 
-                        <div className="form-group">
-                            <label htmlFor="password" className="form-label">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="form-input"
-                                placeholder="Enter your password"
-                                autoComplete="current-password"
-                                disabled={loginMutation.isPending}
-                            />
-                        </div>
+                        <Input
+                            label="Password"
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                            autoComplete="current-password"
+                            disabled={loginMutation.isPending}
+                            required
+                        />
 
-                        <button
-                            type="submit"
-                            disabled={loginMutation.isPending || hasValidationErrors.length > 0}
-                            className="auth-button"
-                        >
-                            {loginMutation.isPending ? 'Signing In...' : 'Sign In'}
-                        </button>
+                        <Button type="submit" variant="primary" size="lg" loading={loginMutation.isPending} fullWidth>
+                            Sign In
+                        </Button>
                     </form>
 
                     <div className="auth-footer">
@@ -140,7 +104,7 @@ export const Login = () => {
                             </Link>
                         </p>
                     </div>
-                </div>
+                </Card>
             </div>
         </Layout>
     );

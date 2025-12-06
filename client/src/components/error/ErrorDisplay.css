@@ -1,0 +1,250 @@
+.error-display {
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    margin: 12px 0;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.error-display.server {
+    border-left-color: #dc3545;
+    background: #fff5f5;
+}
+
+.error-display.client {
+    border-left-color: #fd7e14;
+    background: #fff9f5;
+}
+
+.error-display.auth {
+    border-left-color: var(--primary-color);
+    background: var(--background-light);
+}
+
+.error-display.validation {
+    border-left-color: #ffc107;
+    background: #fffcf0;
+}
+
+.error-display.unknown {
+    border-left-color: var(--text-light);
+    background: var(--background-light);
+}
+
+.error-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 12px;
+}
+
+.error-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-title h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.error-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Removed old meta styles - now using error-field structure */
+
+.error-content {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.error-field {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+}
+
+.error-field-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 13px;
+    text-transform: capitalize;
+    text-align: left;
+    align-self: flex-start;
+}
+
+.error-field-value {
+    font-size: 14px;
+    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.05);
+    padding: var(--spacing-sm) 12px;
+    border-radius: var(--radius-xs);
+    line-height: 1.5;
+}
+
+/* For technical values like timestamps and endpoints */
+.error-field-value {
+    font-family: 'Courier New', monospace;
+}
+
+/* Reset font for message values that contain lists */
+.error-field-value ul {
+    font-family: inherit;
+}
+
+/* Removed - now using unified error-field-value styling */
+
+/* Removed special message field styling - now all fields are consistent */
+
+.error-field-value .error-message-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.error-field-value .error-message-list li {
+    margin: 4px 0;
+    color: inherit;
+    font-weight: normal;
+    position: relative;
+    padding-left: 16px;
+}
+
+.error-field-value .error-message-list li::before {
+    content: '•';
+    color: var(--accent-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.error-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the buttons */
+    margin-top: 16px;
+}
+
+.error-retry-btn,
+.error-dismiss-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 13px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.error-retry-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(157, 127, 217, 0.2);
+}
+
+.error-retry-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(157, 127, 217, 0.3);
+}
+
+.error-dismiss-btn {
+    background: var(--text-light);
+    color: white;
+    box-shadow: 0 2px 4px rgba(107, 95, 126, 0.2);
+}
+
+.error-dismiss-btn:hover {
+    background: var(--text-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(107, 95, 126, 0.3);
+}
+
+.error-details {
+    margin-top: 16px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+
+.error-details summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.error-details pre {
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    padding: 12px;
+    font-size: 11px;
+    color: var(--text-color);
+    overflow-x: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    line-height: 1.4;
+    margin: 0;
+    font-family: 'Courier New', Monaco, monospace;
+}
+
+.error-display.compact {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 12px;
+    margin: var(--spacing-xs) 0;
+    font-size: 14px;
+    box-shadow: var(--shadow-xs);
+}
+
+.error-display.compact .error-icon {
+    font-size: 16px;
+}
+
+.error-display.compact .error-field-value {
+    flex: 1;
+    margin: 0;
+    font-size: 13px;
+    color: #495057;
+    background: none;
+    border: none;
+    padding: 0;
+    font-weight: normal;
+    font-family: inherit;
+}
+
+.error-display.compact .error-dismiss {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.error-display.compact .error-dismiss:hover {
+    background: rgba(0, 0, 0, 0.1);
+}

@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react';
-import { Header } from '../header/Header';
-import { Footer } from '../footer/Footer.tsx';
+import { Header } from '../header';
+import { Footer } from '../footer';
 import './Layout.css';
 
 interface LayoutProps {
