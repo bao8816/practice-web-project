@@ -1,0 +1,6 @@
+/* Divider */
+.divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: var(--spacing-sm) 0;
+}
