@@ -30,7 +30,7 @@ export class AddressesController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('user/me')
+    @Get('me')
     async getMyAddresses(@Request() req: AuthRequest): Promise<Addresses[]> {
         const userId = req.user.id;
         return this.addressesService.findByUserId(userId);
@@ -39,22 +39,11 @@ export class AddressesController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async createAddress(@Request() req: AuthRequest, @Body() createAddressDto: CreateAddressDto): Promise<Addresses> {
-        if (!createAddressDto.userId) {
-            createAddressDto.userId = req.user.id;
-        }
+        createAddressDto.userId = req.user.id;
 
         if (!createAddressDto.recipientName) {
             createAddressDto.recipientName = req.user.username;
         }
-
-        return this.addressesService.createAddress(createAddressDto);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Post('user/me')
-    async createMyAddress(@Request() req: AuthRequest, @Body() createAddressDto: CreateAddressDto): Promise<Addresses> {
-        createAddressDto.userId = req.user.id;
-        createAddressDto.recipientName = req.user.username;
 
         return this.addressesService.createAddress(createAddressDto);
     }
