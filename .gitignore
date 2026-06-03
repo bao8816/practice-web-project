@@ -1,2 +1,21 @@
 .idea
-./node_modules
+node_modules
+**/node_modules
+
+# pnpm
+.pnpm-store
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist
+build
+/coverage
+
+# OS
+.DS_Store
+Thumbs.db
