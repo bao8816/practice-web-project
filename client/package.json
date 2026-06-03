@@ -13,9 +13,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "format:fix": "npm run format && npm run lint:fix",
+    "format:fix": "pnpm run format && pnpm run lint:fix",
     "preview": "vite preview",
-    "restart": "echo 'Restarting Vite server...' && npm run dev"
+    "restart": "echo 'Restarting Vite server...' && pnpm run dev"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.9",

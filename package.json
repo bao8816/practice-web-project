@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "client": "pnpm --filter client dev",
     "server": "pnpm --filter server start:dev",
-    "dev": "pnpm -r --parallel --filter client --filter server run start:dev & pnpm --filter client dev",
     "build:client": "pnpm --filter client build",
     "build:server": "pnpm --filter server build",
     "lint": "pnpm -r lint",

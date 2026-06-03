@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
-    "format:fix": "npm run format && npm run lint:fix",
+    "format:fix": "pnpm run format && pnpm run lint:fix",
     "seed": "npx ts-node src/db/seed.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
