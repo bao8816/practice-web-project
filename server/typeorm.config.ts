@@ -1,12 +1,10 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Users } from './src/users/users.entity';
 import { Profiles } from './src/profiles/profiles.entity';
 import { Addresses } from './src/addresses/addresses.entity';
-
-dotenv.config();
 
 const configService = new ConfigService();
 
