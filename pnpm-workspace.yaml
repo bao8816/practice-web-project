@@ -1,3 +1,15 @@
+minimumReleaseAge: 20160
+minimumReleaseAgeExclude:
+  - form-data
+  - js-yaml
+  - '@babel/core'
+nodeLinker: hoisted
+shamefullyHoist: true
+overrides:
+  # Security patch pins — bump deliberately after reviewing changelog + audit
+  form-data: '4.0.6'        # GHSA-hmw2-7cc7-3qxx (CRLF injection)
+  js-yaml: '4.2.0'          # GHSA-h67p-54hq-rp68 (quadratic DoS)
+  '@babel/core': '7.29.7'   # GHSA-4x5r-pxfx-6jf8 (sourceMappingURL file read)
 packages:
   - 'client'
   - 'server'
