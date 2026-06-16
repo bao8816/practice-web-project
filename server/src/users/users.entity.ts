@@ -1,5 +1,5 @@
-import { Addresses } from 'src/addresses/addresses.entity';
-import { Profiles } from 'src/profiles/profiles.entity';
+import { Addresses } from '../addresses/addresses.entity';
+import { Profiles } from '../profiles/profiles.entity';
 import {
     Entity,
     PrimaryGeneratedColumn,

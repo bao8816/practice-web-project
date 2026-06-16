@@ -21,13 +21,13 @@ rl.question(
             switch (answer.trim()) {
                 case '1':
                     console.log('\n🔄 Creating/Recreating database and data...');
-                    execSync('npm run db:drop && npm run db:init', { stdio: 'inherit' });
+                    execSync('pnpm run db:drop && pnpm run db:init', { stdio: 'inherit' });
                     console.log('\n✅ Database created successfully with fresh data!');
                     break;
 
                 case '2':
                     console.log('\n🔄 Updating schema only (keeping existing data)...');
-                    execSync('npm run build && npm run migration:run', { stdio: 'inherit' });
+                    execSync('pnpm run build && pnpm run migration:run', { stdio: 'inherit' });
                     console.log('\n✅ Schema updated successfully!');
                     break;
 

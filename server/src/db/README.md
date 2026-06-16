@@ -4,13 +4,17 @@
 
 This directory contains database seeding and management utilities for the practice-web-project server.
 
+> **Working directory:** Commands below assume you are inside the `server/` directory.
+> From the repo root, prefix with `pnpm --filter server <command>` (e.g. `pnpm --filter server db:init`).
+> The project enforces `pnpm` only — `npm`/`yarn` will be rejected by the `preinstall` hook.
+
 ---
 
 ## 🛠️ Available Commands
 
 ### Migration Commands
 
-#### `npm run migration:generate`
+#### `pnpm migration:generate`
 
 **Purpose:** Automatically generates a new migration file based on entity changes.
 
@@ -22,18 +26,18 @@ This directory contains database seeding and management utilities for the practi
 **Usage:**
 
 ```bash
-npm run migration:generate -- src/migrations/DescriptiveMigrationName
+pnpm migration:generate -- src/migrations/DescriptiveMigrationName
 ```
 
 **Example:**
 
 ```bash
-npm run migration:generate -- src/migrations/AddPhoneToProfile
+pnpm migration:generate -- src/migrations/AddPhoneToProfile
 ```
 
 ---
 
-#### `npm run migration:run`
+#### `pnpm migration:run`
 
 **Purpose:** Executes all pending migrations.
 
@@ -46,14 +50,14 @@ npm run migration:generate -- src/migrations/AddPhoneToProfile
 **Usage:**
 
 ```bash
-npm run migration:run
+pnpm migration:run
 ```
 
 **Note:** Only runs migrations that haven't been executed yet (tracks in `migrations` table)
 
 ---
 
-#### `npm run migration:revert`
+#### `pnpm migration:revert`
 
 **Purpose:** Reverts the most recently executed migration.
 
@@ -65,7 +69,7 @@ npm run migration:run
 **Usage:**
 
 ```bash
-npm run migration:revert
+pnpm migration:revert
 ```
 
 **Note:** Can be run multiple times to revert multiple migrations sequentially
@@ -74,7 +78,7 @@ npm run migration:revert
 
 ### Database Commands
 
-#### `npm run seed`
+#### `pnpm seed`
 
 **Purpose:** Populates database with sample/initial data.
 
@@ -86,7 +90,7 @@ npm run migration:revert
 **Usage:**
 
 ```bash
-npm run seed
+pnpm seed
 ```
 
 **What it does:**
@@ -99,7 +103,7 @@ npm run seed
 
 ---
 
-#### `npm run db:init`
+#### `pnpm db:init`
 
 **Purpose:** Complete database initialization (build + migrate + seed).
 
@@ -111,18 +115,18 @@ npm run seed
 **Usage:**
 
 ```bash
-npm run db:init
+pnpm db:init
 ```
 
 **What it does:**
 
-1. `npm run build` - Compiles TypeScript
-2. `npm run migration:run` - Runs all migrations
-3. `npm run seed` - Seeds initial data
+1. `pnpm build` - Compiles TypeScript
+2. `pnpm migration:run` - Runs all migrations
+3. `pnpm seed` - Seeds initial data
 
 ---
 
-#### `npm run db:drop`
+#### `pnpm db:drop`
 
 **Purpose:** Drops entire database schema (⚠️ DESTRUCTIVE).
 
@@ -134,14 +138,14 @@ npm run db:init
 **Usage:**
 
 ```bash
-npm run db:drop
+pnpm db:drop
 ```
 
 **Warning:** Deletes ALL tables and data. Cannot be undone.
 
 ---
 
-#### `npm run db:manage`
+#### `pnpm db:manage`
 
 **Purpose:** Interactive database management menu.
 
@@ -153,7 +157,7 @@ npm run db:drop
 **Usage:**
 
 ```bash
-npm run db:manage
+pnpm db:manage
 ```
 
 **Options:**
@@ -173,29 +177,29 @@ cp .env.example .env
 # Edit .env with your database credentials
 
 # 2. Initialize database
-npm run db:init
+pnpm db:init
 ```
 
 ### After Modifying Entities
 
 ```bash
 # 1. Generate migration from entity changes
-npm run migration:generate -- src/migrations/YourMigrationName
+pnpm migration:generate -- src/migrations/YourMigrationName
 
 # 2. Apply the migration
-npm run migration:run
+pnpm migration:run
 ```
 
 ### Reset Database (Development)
 
 ```bash
 # Option 1: Using interactive menu
-npm run db:manage
+pnpm db:manage
 # Choose option 1
 
 # Option 2: Manual commands
-npm run db:drop
-npm run db:init
+pnpm db:drop
+pnpm db:init
 ```
 
 ### Update Schema (Keep Data)
@@ -205,7 +209,7 @@ npm run db:init
 git pull
 
 # Run new migrations
-npm run migration:run
+pnpm migration:run
 ```
 
 ---
@@ -268,14 +272,14 @@ DATABASE_NAME=practice_web_db
 ```bash
 # Check migrations table
 # Manually delete from migrations table or revert
-npm run migration:revert
+pnpm migration:revert
 ```
 
 ### "Cannot find module"
 
 ```bash
 # Rebuild TypeScript
-npm run build
+pnpm build
 ```
 
 ### "Database does not exist"
@@ -292,8 +296,8 @@ CREATE DATABASE practice_web_db;
 
 ```bash
 # Drop and recreate
-npm run db:drop
-npm run db:init
+pnpm db:drop
+pnpm db:init
 ```
 
 ---

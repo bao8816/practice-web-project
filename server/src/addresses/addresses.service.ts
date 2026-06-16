@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Addresses } from './addresses.entity';
 import { Repository } from 'typeorm';
 import { AppException } from '../shared/exceptions/exceptions';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
+import { CreateAddressDto, UpdateAddressDto } from './dto';
 import { ValidationService } from '../shared/services/validation.service';
 
 @Injectable()
