@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Layout } from '../../components/layout';
+import { Layout } from '../../components';
 import { ErrorDisplay } from '../../components/error';
 import { Button, Card, Field } from '../../components/ui';
 import { useMyProfile } from '../../hooks/profiles';

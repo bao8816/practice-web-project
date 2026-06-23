@@ -151,6 +151,12 @@
     font-weight: 600;
     font-size: 16px;
     color: var(--text-color);
+    /* Text truncate with ellipsis */
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: default;
 }
 
 .menu-user-status {
